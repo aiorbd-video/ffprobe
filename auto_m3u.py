@@ -1,10 +1,12 @@
+import asyncio
+import aiohttp
 import subprocess
-import requests
 import shutil
-import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
+import random
+from urllib.parse import urlparse
 
-# এখানে আপনার আনলিমিটেড M3U লিংকগুলো দিন
+# --- কনফিগারেশন ---
 M3U_SOURCES = [
     # --- Visible & Active Links ---
     "https://raw.githubusercontent.com/abusaeeidx/Mrgify-BDIX-IPTV/refs/heads/main/playlist.m3u",
@@ -130,141 +132,186 @@ M3U_SOURCES = [
 ]
 
 WORKING_FILE = "working.m3u"
-THREADS = 20  
-TIMEOUT = 10
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+CONCURRENCY_LIMIT = 100  # একসাথে ১০০টি রিকোয়েস্ট (Async এর জন্য এটা নিরাপদ)
+HTTP_TIMEOUT = 5         # প্রাথমিক HTTP চেকের জন্য টাইমআউট
+FFPROBE_TIMEOUT = 8      # FFprobe এর জন্য টাইমআউট
 
-def load_all_m3u(sources):
-    headers = {"User-Agent": USER_AGENT}
-    all_items = []
-    loaded_playlists = 0
-    
-    for source in sources:
-        print(f"📥 লোড হচ্ছে: {source}")
-        try:
-            if source.startswith("http"):
-                # ইউজার-এজেন্টজনিত সমস্যা এড়াতে | বা অন্য প্যারামিটার বাদ দিয়ে ক্লিন URL নেওয়া হচ্ছে
-                clean_url = source.split('|')[0]
-                response = requests.get(clean_url, headers=headers, timeout=20)
-                text = response.text.splitlines()
-            else:
-                with open(source, encoding="utf-8", errors="ignore") as f:
-                    text = f.readlines()
-            
-            loaded_playlists += 1
-            i = 0
-            while i < len(text):
-                line = text[i].strip()
-                if line.startswith("#EXTINF"):
-                    if i + 1 < len(text):
-                        url = text[i + 1].strip()
-                        if url and not url.startswith("#"):
-                            all_items.append((line, url))
-                    i += 2
-                else:
-                    i += 1
-        except Exception as e:
-            print(f"❌ এরর ({source}): {e}")
-            
-    # ডুপ্লিকেট লিংক রিমুভ করা
-    unique_items = {}
-    for extinf, url in all_items:
-        unique_items[url] = extinf
-        
-    return [(extinf, url) for url, extinf in unique_items.items()], loaded_playlists
+# রেন্ডম ইউজার-এজেন্ট লিস্ট (বট ব্লকিং এড়াতে)
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0",
+    "VLC/3.0.18 LibVLC/3.0.18",
+    "Kodi/19.5 (Windows NT 10.0; Win64; x64) App_Bitness/64 Version/19.5-Matrix"
+]
 
-
-def check(entry):
-    extinf, url = entry
-    
-    # ডামি বা ইনফো লিংক হলে চেক করার দরকার নেই, সরাসরি পাস করে দেবে
-    if "dummy.link" in url:
-        return True, entry
-
-    cmd = [
-        "ffprobe", "-user_agent", USER_AGENT, "-v", "error",
-        "-show_entries", "stream=codec_type",
-        "-of", "default=noprint_wrappers=1:nokey=1", url
+# --- লগিং সেটআপ ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("checker.log", mode='w', encoding='utf-8'),
+        logging.StreamHandler()
     ]
-    try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=TIMEOUT)
-        output = r.stdout.strip()
-        if r.returncode == 0 and ("video" in output or "audio" in output):
-            return True, entry
-    except:
-        pass
-    return False, entry
+)
+logger = logging.getLogger(__name__)
 
+class M3UProcessor:
+    def __init__(self):
+        self.unique_channels = {}
+        self.working_channels = []
+        self.dead_count = 0
+        self.total_playlists = 0
 
-def save_working_playlist(file, ok_entries, dead_count, playlist_count):
-    """এখানে আপনার দেওয়া ক্রেডিট এবং স্ট্যাটাসগুলো ইনফো চ্যানেল হিসেবে তৈরি করা হয়েছে"""
-    
-    with open(file, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
+    def get_random_ua(self):
+        return random.choice(USER_AGENTS)
+
+    async def fetch_playlist(self, session, url):
+        """একটি প্লেলিস্ট ডাউনলোড ও পার্স করা"""
+        clean_url = url.split('|')[0]
+        headers = {"User-Agent": self.get_random_ua()}
         
-        info_logo = "https://i.ibb.co/VTRJ5vX/info.png"
-        group = "ℹ️ INFO & CREDITS"
-        online_count = len(ok_entries)
-        
-        # ১. ইনফো চ্যানেল: Playlists Checked
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 📁 Total Playlist Checked: {playlist_count}\n')
-        f.write('http://dummy.link/playlist.mp4\n')
-        
-        # ২. ইনফো চ্যানেল: Online Channels
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🟢 Online Channels: {online_count}\n')
-        f.write('http://dummy.link/online.mp4\n')
-        
-        # ৩. ইনফো চ্যানেল: Dead Channels
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🔴 Dead Channels: {dead_count}\n')
-        f.write('http://dummy.link/dead.mp4\n')
-        
-        # ৪. ইনফো চ্যানেল: Creator Credit
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 👑 Made By All in one reborn\n')
-        f.write('http://dummy.link/credit1.mp4\n')
-        
-        # ৫. ইনফো চ্যানেল: Telegram Link
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", ✈️ Join telegram https://t.me/allonebd\n')
-        f.write('http://dummy.link/credit2.mp4\n')
-        
-        # ৬. ইনফো চ্যানেল: Website Link
-        f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🌐 Website: https://www.ratulxlive.duckdns.org/\n')
-        f.write('http://dummy.link/credit3.mp4\n')
+        try:
+            async with session.get(clean_url, headers=headers, timeout=15) as response:
+                if response.status == 200:
+                    text = await response.text()
+                    lines = text.splitlines()
+                    self._parse_m3u_content(lines)
+                    self.total_playlists += 1
+                    logger.info(f"✅ Loaded: {clean_url}")
+                else:
+                    logger.warning(f"⚠️ Failed ({response.status}): {clean_url}")
+        except Exception as e:
+            logger.error(f"❌ Error fetching {clean_url}: {str(e)}")
 
-        # রিয়েল চ্যানেলগুলো রাইট করা হচ্ছে
-        for extinf, url in ok_entries:
-            f.write(extinf + "\n")
-            f.write(url + "\n")
-
-
-def main():
-    if shutil.which("ffprobe") is None:
-        print("❌ 'ffprobe' পাওয়া যায়নি!")
-        return
-
-    # লিংক কালেক্ট করা
-    items, playlist_count = load_all_m3u(M3U_SOURCES)
-    print(f"\n✅ মোট ইউনিক চ্যানেল পাওয়া গেছে: {len(items)} টি। চেকিং শুরু হচ্ছে...\n")
-
-    ok = []
-    bad_count = 0
-
-    with ThreadPoolExecutor(max_workers=THREADS) as ex:
-        futures = [ex.submit(check, x) for x in items]
-        total = len(futures)
-
-        for i, future in enumerate(as_completed(futures), 1):
-            good, entry = future.result()
-            if good:
-                ok.append(entry)
-                print(f"[{i}/{total}] 🟢 WORKING")
+    def _parse_m3u_content(self, lines):
+        """M3U লাইন থেকে ডেটা এক্সট্রাক্ট করা (ডুপ্লিকেট রিমুভ সহ)"""
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            if line.startswith("#EXTINF"):
+                if i + 1 < len(lines):
+                    url = lines[i + 1].strip()
+                    if url and not url.startswith("#") and url.startswith("http"):
+                        # URL কে key হিসেবে রাখলে অটো ডুপ্লিকেট রিমুভ হবে
+                        self.unique_channels[url] = line
+                i += 2
             else:
-                bad_count += 1
-                print(f"[{i}/{total}] 🔴 DEAD")
+                i += 1
 
-    # ফাইল সেভ করা (আপনার দেওয়া স্ট্যাটাস ও ক্রেডিটসহ)
-    save_working_playlist(WORKING_FILE, ok, bad_count, playlist_count)
-    
-    print(f"\n🎉 সফল! মোট {len(ok)} টি সচল লিংক '{WORKING_FILE}' ফাইলে সেভ হয়েছে।")
+    async def check_channel(self, session, semaphore, url, extinf):
+        """একটি চ্যানেলের লিংক চেক করা (HTTP + FFprobe)"""
+        async with semaphore:
+            headers = {"User-Agent": self.get_random_ua()}
+            
+            # স্টেপ ১: ফাস্ট HTTP চেক (সার্ভার রেসপন্স করে কি না)
+            try:
+                # হেড রিকোয়েস্ট অনেক ফাস্ট, পুরো ভিডিও টানে না
+                async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
+                    if resp.status not in [200, 302, 301]:
+                        self.dead_count += 1
+                        return
+            except Exception:
+                # হেড ফেইল করলেও কিছু আইপিটিভি GET এ কাজ করে, তাই সরাসরি ব্লক করছি না
+                pass
+
+            # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক (শুধুমাত্র যদি HTTP মোটামুটি ঠিক থাকে)
+            cmd = [
+                "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
+                "-show_entries", "stream=codec_type",
+                "-of", "default=noprint_wrappers=1:nokey=1", url
+            ]
+            
+            try:
+                # asyncio.create_subprocess_exec ব্যবহার করে নন-ব্লকিং সাবপ্রসেস রান করা
+                process = await asyncio.create_subprocess_exec(
+                    *cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                try:
+                    stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=FFPROBE_TIMEOUT)
+                    output = stdout.decode('utf-8').strip()
+                    
+                    if process.returncode == 0 and ("video" in output or "audio" in output):
+                        self.working_channels.append((extinf, url))
+                        logger.info(f"🟢 OK: {urlparse(url).netloc}...")
+                        return
+                except asyncio.TimeoutError:
+                    process.kill()
+                    
+            except Exception as e:
+                pass
+
+            self.dead_count += 1
+
+    def save_output(self):
+        """আউটপুট সেভ করা (ইনফো ডামি চ্যানেল সহ)"""
+        logger.info("💾 Saving results to file...")
+        with open(WORKING_FILE, "w", encoding="utf-8") as f:
+            f.write("#EXTM3U\n")
+            
+            info_logo = "https://i.ibb.co/VTRJ5vX/info.png"
+            group = "ℹ️ INFO & CREDITS"
+            online_count = len(self.working_channels)
+            
+            # ইনফো চ্যানেল তৈরি
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 📁 Total Playlist Checked: {self.total_playlists}\nhttp://dummy.link/1\n')
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🟢 Online Channels: {online_count}\nhttp://dummy.link/2\n')
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🔴 Dead Channels: {self.dead_count}\nhttp://dummy.link/3\n')
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 👑 Made By All in one reborn\nhttp://dummy.link/4\n')
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", ✈️ Telegram: https://t.me/allonebd\nhttp://dummy.link/5\n')
+            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🌐 Web: https://www.ratulxlive.duckdns.org/\nhttp://dummy.link/6\n')
+
+            # রিয়েল চ্যানেল সেভ
+            for extinf, url in self.working_channels:
+                f.write(extinf + "\n" + url + "\n")
+
+    async def run(self):
+        # FFprobe চেক
+        if shutil.which("ffprobe") is None:
+            logger.critical("❌ FFprobe not found in system PATH!")
+            return
+
+        logger.info("🚀 Starting Enterprise M3U Checker...")
+
+        # ১. প্লেলিস্ট ডাউনলোড পর্ব
+        async with aiohttp.ClientSession() as session:
+            download_tasks = [self.fetch_playlist(session, url) for url in M3U_SOURCES]
+            await asyncio.gather(*download_tasks)
+
+        total_unique = len(self.unique_channels)
+        logger.info(f"✅ Found {total_unique} unique channels. Starting validation...")
+
+        # ২. চ্যানেল ভ্যালিডেশন পর্ব
+        semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
+        
+        # aiohttp সেশনের কিছু লিমিট কাস্টমাইজ করা (TCP Connector)
+        conn = aiohttp.TCPConnector(limit=CONCURRENCY_LIMIT, ssl=False)
+        async with aiohttp.ClientSession(connector=conn) as session:
+            check_tasks = []
+            for url, extinf in self.unique_channels.items():
+                task = asyncio.create_task(self.check_channel(session, semaphore, url, extinf))
+                check_tasks.append(task)
+            
+            # প্রগ্রেস ট্র্যাক করার জন্য tqdm এর বিকল্প হিসেবে লগিং
+            chunk_size = 1000
+            for i in range(0, len(check_tasks), chunk_size):
+                chunk = check_tasks[i:i + chunk_size]
+                await asyncio.gather(*chunk)
+                logger.info(f"📊 Progress: Checked {min(i + chunk_size, total_unique)} / {total_unique}")
+
+        # ৩. ফাইল সেভ পর্ব
+        self.save_output()
+        logger.info(f"🎉 Done! Working: {len(self.working_channels)} | Dead: {self.dead_count}")
 
 if __name__ == "__main__":
-    main()
+    # Windows এ ProactorEventLoop এরর ফিক্স
+    import sys
+    if sys.platform == 'win32':
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+        
+    processor = M3UProcessor()
+    asyncio.run(processor.run())
+

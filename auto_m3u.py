@@ -7,8 +7,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # এখানে আপনার আনলিমিটেড M3U লিংকগুলো কমা (,) দিয়ে যুক্ত করুন
 M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/sm-live.m3u",
-    "https://example.com/list1.m3u",
-    "https://example.com/list2.m3u"
+    "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u",
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u",
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",
 ]
 
 WORKING_FILE = "working.m3u"

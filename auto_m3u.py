@@ -10,6 +10,8 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u",
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u",
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",
+    "https://raw.githubusercontent.com/abusaeeidx/Yupptv-Playlist/refs/heads/main/playlist.m3u",
+    "https://raw.githubusercontent.com/cfshorts/Jio-tv-ww/refs/heads/main/README.md",
 ]
 
 WORKING_FILE = "working.m3u"

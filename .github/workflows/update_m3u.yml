@@ -29,7 +29,7 @@ jobs:
           pip install aiohttp requests  # <--- এখানে aiohttp এবং requests ইন্সটল করা হচ্ছে
 
       - name: Run Enterprise M3U Checker Script
-        run: python auto_m3u_enterprise.py
+        run: python auto_m3u.py
 
       - name: Commit and Push Changes
         run: |

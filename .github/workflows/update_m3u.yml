@@ -1,0 +1,40 @@
+name: Auto Update M3U Playlist
+
+# কখন রান করবে তা নির্ধারণ (নিচেরটি প্রতিদিন রাত ১২টায় রান করবে)
+on:
+  schedule:
+    - cron: '0 0 * * *' 
+  workflow_dispatch: # ম্যানুয়ালি রান করার বাটন চালু করবে
+
+jobs:
+  update-m3u:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # গিটহাবে পুশ করার পারমিশন
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run M3U Checker Script
+        run: python auto_m3u.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add working.m3u
+          # যদি নতুন কোনো পরিবর্তন থাকে তবেই পুশ করবে
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto Update: Working M3U" && git push)

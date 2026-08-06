@@ -12,6 +12,11 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",
     "https://raw.githubusercontent.com/abusaeeidx/Yupptv-Playlist/refs/heads/main/playlist.m3u",
     "https://raw.githubusercontent.com/cfshorts/Jio-tv-ww/refs/heads/main/README.md",
+    "https://raw.githubusercontent.com/abusaeeidx/BDxTV/refs/heads/main/playlist_s.m3u",
+    "https://m3u-tvb.pages.dev/pk.m3ux",
+    "https://iptv-org.github.io/iptv/index.country.m3u",
+    "https://raw.githubusercontent.com/abusaeeidx/IPTV-Scraper-Zilla/refs/heads/main/Plex-All.m3u",
+    
 ]
 
 WORKING_FILE = "working.m3u"

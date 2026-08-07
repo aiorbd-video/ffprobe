@@ -35,8 +35,7 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/iptv-org/iptv/refs/heads/master/streams/in_doordarshan.m3u",
     "https://playlists-by-playztv.pages.dev/wavesno.m3u",
     "https://playztv-ol-pl.deadxploit.workers.dev/?get-pl&id=pishowxc.m3u",
-    "https://iptv-org.github.io/iptv/index.m3u",
-    "https://iptv-org.github.io/iptv/languages/hin.m3u",
+  
     "https://playlists-by-playztv.pages.dev/dangalp.m3u",
     "https://playlists-by-playztv.pages.dev/mxp.m3u",
     "https://pzsl.pzcdn.workers.dev/?get-pl",

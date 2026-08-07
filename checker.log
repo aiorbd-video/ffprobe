@@ -1,175 +1,311 @@
-2026-08-07 19:09:40,541 [INFO] 🚀 Starting Pro M3U Checker...
-2026-08-07 19:09:40,698 [INFO] ✅ Loaded: https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u
-2026-08-07 19:09:40,728 [INFO] ✅ Loaded: https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u
-2026-08-07 19:09:40,729 [INFO] ✅ Loaded: https://m3u-tvb.pages.dev/ayna+.m3u
-2026-08-07 19:09:40,746 [INFO] ✅ Loaded: https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u
-2026-08-07 19:09:40,747 [INFO] ✅ Found 264 unique streams. Starting validation...
-2026-08-07 19:09:42,976 [INFO] 🟢 OK: [Cartoon] Gopal Bhar
-2026-08-07 19:09:42,976 [INFO] 🟢 OK: [Cartoon] Motu Patlu
-2026-08-07 19:09:43,491 [INFO] 🟢 OK: [Movie] Gold Mines Movie
-2026-08-07 19:09:43,623 [INFO] 🟢 OK: [Cartoon] Sony Aath
-2026-08-07 19:09:43,659 [INFO] 🟢 OK: [Sports] CazeTv 1080p
-2026-08-07 19:09:43,854 [INFO] 🟢 OK: [Uncategorized] Test Pogram
-2026-08-07 19:09:44,156 [INFO] 🟢 OK: [Documentry] Discovery HD
-2026-08-07 19:09:44,199 [INFO] 🟢 OK: [Drama] Sony Television HD
-2026-08-07 19:09:44,334 [INFO] 🟢 OK: [Documentry] Travelxp
-2026-08-07 19:09:44,435 [INFO] 🟢 OK: [Sports] Bein sports 3
-2026-08-07 19:09:44,478 [INFO] 🟢 OK: [News] News 21 HD
-2026-08-07 19:09:44,658 [INFO] 🟢 OK: [Sports] Eurosports 2
-2026-08-07 19:09:44,663 [INFO] 🟢 OK: [Drama] Star Jalsha HD
-2026-08-07 19:09:44,795 [INFO] 🟢 OK: [Sports] T sports
-2026-08-07 19:09:44,933 [INFO] 🟢 OK: [Sports] DAZN 5
-2026-08-07 19:09:45,072 [INFO] 🟢 OK: [Cartoon] Pogo
-2026-08-07 19:09:45,525 [INFO] 🟢 OK: [Cartoon] Oggy HD
-2026-08-07 19:09:45,656 [INFO] 🟢 OK: [Drama] G Series
-2026-08-07 19:09:45,730 [INFO] 🟢 OK: [Music] Sangeet Bangla
-2026-08-07 19:09:45,850 [INFO] 🟢 OK: [Sports] Bein Sports Xtra
-2026-08-07 19:09:45,891 [INFO] 🟢 OK: [News] Gazi Tv
-2026-08-07 19:09:46,080 [INFO] 🟢 OK: [Movie] Zee Cinema HD
-2026-08-07 19:09:46,177 [INFO] 🟢 OK: [Movie] Sony Max HD
-2026-08-07 19:09:46,211 [INFO] 🟢 OK: [Movie] Sony Pix
-2026-08-07 19:09:46,291 [INFO] 🟢 OK: [Bangla Drama] Bibek Mojid
-2026-08-07 19:09:46,316 [INFO] 🟢 OK: [Bangla Drama] Iti Rudra
-2026-08-07 19:09:46,629 [INFO] 🟢 OK: [Movie] HBO Max 1
-2026-08-07 19:09:46,758 [INFO] 🟢 OK: [Bangla Drama] Digital Hablu
-2026-08-07 19:09:46,778 [INFO] 🟢 OK: [Bangla Drama] Double Pressure
-2026-08-07 19:09:46,884 [INFO] 🟢 OK: [Bangla Drama] Punorabritti
-2026-08-07 19:09:46,908 [INFO] 🟢 OK: [Bangla Drama] Unmanush
-2026-08-07 19:09:46,930 [INFO] 🟢 OK: [Bangla Drama] Kakkur Tiktokar Bou
-2026-08-07 19:09:46,999 [INFO] 🟢 OK: [Bangla Drama] Tomaroi Thakbo
-2026-08-07 19:09:47,080 [INFO] 🟢 OK: [Bangla Drama] Dakpion
-2026-08-07 19:09:47,096 [INFO] 🟢 OK: [Bangla Drama] Vul Naki Prem
-2026-08-07 19:09:47,111 [INFO] 🟢 OK: [Cartoon] Cartoon Network USA
-2026-08-07 19:09:47,169 [INFO] 🟢 OK: [Bangla Drama] Amader Pasher Barita
-2026-08-07 19:09:47,179 [INFO] 🟢 OK: [Bangla Drama] Barir Choto Chele
-2026-08-07 19:09:47,226 [INFO] 🟢 OK: [Bangla Drama] Kabjab
-2026-08-07 19:09:47,248 [INFO] 🟢 OK: [Bangla Drama] Chawa Pawa
-2026-08-07 19:09:47,252 [INFO] 🟢 OK: [Bangla Drama] Opochonder Saat Din
-2026-08-07 19:09:47,307 [INFO] 🟢 OK: [Entertainment] SRK TV
-2026-08-07 19:09:47,355 [INFO] 🟢 OK: [Bangla Drama] Phinix Pakhir Gaan
-2026-08-07 19:09:47,362 [INFO] 🟢 OK: [Bangla Drama] Je Poth Bhule Gecho Tumi
-2026-08-07 19:09:47,368 [INFO] 🟢 OK: [Movies] SOB PREMER GOLPO EK NOY
-2026-08-07 19:09:47,396 [INFO] 🟢 OK: [Movies] Shob Charitro Kalponik Noy
-2026-08-07 19:09:47,397 [INFO] 🟢 OK: [Movies] Sohorer Kokkhopothe
-2026-08-07 19:09:47,404 [INFO] 🟢 OK: [Bangla Drama] Half Bottle
-2026-08-07 19:09:47,453 [INFO] 🟢 OK: [Bangla Drama] Josnar Shopno
-2026-08-07 19:09:47,456 [INFO] 🟢 OK: [Bangla Drama] Ajmol Khaner Double Bou
-2026-08-07 19:09:47,458 [INFO] 🟢 OK: [Movies] Thik Thikana
-2026-08-07 19:09:47,562 [INFO] 🟢 OK: [Bangla Drama] Ekti Shukhobor
-2026-08-07 19:09:47,564 [INFO] 🟢 OK: [Bangla Drama] Mugdho Bekoron
-2026-08-07 19:09:47,570 [INFO] 🟢 OK: [Movies] Rong Penci
-2026-08-07 19:09:47,571 [INFO] 🟢 OK: [Bangla Drama] Paparazzi
-2026-08-07 19:09:47,613 [INFO] 🟢 OK: [Bangla Drama] Poroma Sundori
-2026-08-07 19:09:47,642 [INFO] 🟢 OK: [Bangla Drama] Putuler Shongshar
-2026-08-07 19:09:47,643 [INFO] 🟢 OK: [Bangla Drama] No More Friends
-2026-08-07 19:09:47,661 [INFO] 🟢 OK: [Bangla Drama] Megh Na Chaitei Bristi
-2026-08-07 19:09:47,667 [INFO] 🟢 OK: [Bangla Drama] Kuhu Kotha
-2026-08-07 19:09:47,829 [INFO] 🟢 OK: [Bangla Drama] Couple Crisis
-2026-08-07 19:09:47,863 [INFO] 🟢 OK: [Bangla Drama] Tomar Chokhe Cheye
-2026-08-07 19:09:47,895 [INFO] 🟢 OK: [Cartoon] Sony YaY
-2026-08-07 19:09:47,897 [INFO] 🟢 OK: [Bangla Drama] Niyoti
-2026-08-07 19:09:47,936 [INFO] 🟢 OK: [Bangla Drama] Chokro
-2026-08-07 19:09:47,942 [INFO] 🟢 OK: [Bangla Drama] Songshar Amar Valo Lage Na
-2026-08-07 19:09:47,984 [INFO] 🟢 OK: [Bangla Drama] Hasu Chor Kasu Chor
-2026-08-07 19:09:47,987 [INFO] 🟢 OK: [Bangla Drama] Bad Patient
-2026-08-07 19:09:48,073 [INFO] 🟢 OK: [Bangla Drama] Joto Dosh Nondo Ghosh
-2026-08-07 19:09:48,114 [INFO] 🟢 OK: [Bangla Drama] DAY OUT
-2026-08-07 19:09:48,116 [INFO] 🟢 OK: [Bangla Drama] Amar Kotha Ekbaro Vable Na
-2026-08-07 19:09:48,140 [INFO] 🟢 OK: [Bangla Drama] Golper Ekmatro Agantuk
-2026-08-07 19:09:48,140 [INFO] 🟢 OK: [Bangla Drama] View
-2026-08-07 19:09:48,140 [INFO] 🟢 OK: [Entertainment] DD Bangla
-2026-08-07 19:09:48,160 [INFO] 🟢 OK: [Bangla Drama] Laughing Gas
-2026-08-07 19:09:48,188 [INFO] 🟢 OK: [Bangla Drama] Mayasri
-2026-08-07 19:09:48,201 [INFO] 🟢 OK: [Bangla Drama] Sweet Crush
-2026-08-07 19:09:48,347 [INFO] 🟢 OK: [Trending Live Tvs] Unite8 Sports 2
-2026-08-07 19:09:48,347 [INFO] 🟢 OK: [Trending Live Tvs] NTV
-2026-08-07 19:09:48,355 [INFO] 🟢 OK: [Trending Live Tvs] PTV Sports
-2026-08-07 19:09:48,356 [INFO] 🟢 OK: [Bangla Drama] Barishailla Graduate
-2026-08-07 19:09:48,379 [INFO] 🟢 OK: [Trending Live Tvs] Channel I
-2026-08-07 19:09:48,379 [INFO] 🟢 OK: [Bangla Drama] Vul Manush
-2026-08-07 19:09:48,404 [INFO] 🟢 OK: [Trending Live Tvs] TSN 1
-2026-08-07 19:09:48,404 [INFO] 🟢 OK: [Sports] Bleav Football
-2026-08-07 19:09:48,664 [INFO] 🟢 OK: [Trending Live Tvs] ATN News
-2026-08-07 19:09:48,698 [INFO] 🟢 OK: [Trending Live Tvs] T Sports HD
-2026-08-07 19:09:48,699 [INFO] 🟢 OK: [Trending Live Tvs] BTV NATIONAL HD
-2026-08-07 19:09:48,725 [INFO] 🟢 OK: [Bangla Drama] Mounobroto
-2026-08-07 19:09:48,754 [INFO] 🟢 OK: [Documentry] Real Wild
-2026-08-07 19:09:48,782 [INFO] 🟢 OK: [Trending Live Tvs] Bangla Vision
-2026-08-07 19:09:49,168 [INFO] 🟢 OK: [Channels] RTV
-2026-08-07 19:09:49,184 [INFO] 🟢 OK: [Channels] ETV
-2026-08-07 19:09:49,208 [INFO] 🟢 OK: [Trending Live Tvs] ATN Bangla
-2026-08-07 19:09:49,247 [INFO] 🟢 OK: [Channels] Ekattor TV
-2026-08-07 19:09:49,329 [INFO] 🟢 OK: [News] ABN
-2026-08-07 19:09:49,331 [INFO] 🟢 OK: [Sports] TSN 2
-2026-08-07 19:09:49,511 [INFO] 🟢 OK: [Sports] TSN 3
-2026-08-07 19:09:49,548 [INFO] 🟢 OK: [Channels] News 24 BD
-2026-08-07 19:09:49,551 [INFO] 🟢 OK: [Entertainment] DD Bangla
-2026-08-07 19:09:49,695 [INFO] 🟢 OK: [Channels] Jamuna TV
-2026-08-07 19:09:49,905 [INFO] 🟢 OK: [Sports] NFL Network
-2026-08-07 19:09:49,999 [INFO] 🟢 OK: [Entertainment] Green TV HD
-2026-08-07 19:09:50,087 [INFO] 🟢 OK: [Channels] DBC News
-2026-08-07 19:09:50,103 [INFO] 🟢 OK: [Entertainment] Colors Bangla HD
-2026-08-07 19:09:50,161 [INFO] 🟢 OK: [Entertainment] Star Jalsha HD(Test Mode)
-2026-08-07 19:09:50,176 [INFO] 🟢 OK: [Entertainment] My TV HD
-2026-08-07 19:09:50,322 [INFO] 🟢 OK: [News] Iran Press
-2026-08-07 19:09:50,410 [INFO] 🟢 OK: [Entertainment] Ananda TV
-2026-08-07 19:09:50,519 [INFO] 🟢 OK: [Sports] Bein Sports Xtra HD
-2026-08-07 19:09:50,551 [INFO] 🟢 OK: [Entertainment] ATN Bangla HD
-2026-08-07 19:09:50,593 [INFO] 🟢 OK: [Sports] TNT Sport 1
-2026-08-07 19:09:50,657 [INFO] 🟢 OK: [News] Fox Weather
-2026-08-07 19:09:50,659 [INFO] 🟢 OK: [Entertainment] RTV HD
-2026-08-07 19:09:50,666 [INFO] 🟢 OK: [Entertainment] Sun Bangla Hd
-2026-08-07 19:09:50,680 [INFO] 🟢 OK: [Kids] Tom & Zerry
-2026-08-07 19:09:50,712 [INFO] 🟢 OK: [Entertainment] Sheemaroo TV
-2026-08-07 19:09:50,797 [INFO] 🟢 OK: [Bangla] Desh TV
-2026-08-07 19:09:50,808 [INFO] 🟢 OK: [Bangla] Boishakhi TV
-2026-08-07 19:09:50,814 [INFO] 🟢 OK: [News] Accu Weather
-2026-08-07 19:09:50,830 [INFO] 🟢 OK: [Kids] Kids TV
-2026-08-07 19:09:50,872 [INFO] 🟢 OK: [Bangla] Asian TV
-2026-08-07 19:09:50,884 [INFO] 🟢 OK: [Sports] Golf Channel
-2026-08-07 19:09:50,897 [INFO] 🟢 OK: [News] Weather SPY
-2026-08-07 19:09:50,897 [INFO] 🟢 OK: [Discover] BBC Earth HD
-2026-08-07 19:09:50,899 [INFO] 🟢 OK: [Kids] Cartoon Network
-2026-08-07 19:09:50,945 [INFO] 🟢 OK: [Sports] Cricket Gold
-2026-08-07 19:09:50,988 [INFO] 🟢 OK: [Entertainment] Enterten Bangla HD
-2026-08-07 19:09:51,055 [INFO] 🟢 OK: [Bangla] SA TV
-2026-08-07 19:09:51,063 [INFO] 🟢 OK: [Music] Baallee Music
-2026-08-07 19:09:51,134 [INFO] 🟢 OK: [Bangla] Duronto TV
-2026-08-07 19:09:51,187 [INFO] 🟢 OK: [Movies] Goldmines Bollywood
-2026-08-07 19:09:51,337 [INFO] 🟢 OK: [Bangla] Bangla TV
-2026-08-07 19:09:51,362 [INFO] 🟢 OK: [News] BBC News
-2026-08-07 19:09:51,400 [INFO] 🟢 OK: [Music] 9XM
-2026-08-07 19:09:51,580 [INFO] 🟢 OK: [Bangla] Mohona TV
-2026-08-07 19:09:51,592 [INFO] 🟢 OK: [Sports] Star Sports 1 HD
-2026-08-07 19:09:51,627 [INFO] 🟢 OK: [News] Amc
-2026-08-07 19:09:51,629 [INFO] 🟢 OK: [Sports] FOX Sports 1
-2026-08-07 19:09:51,642 [INFO] 🟢 OK: [Bangla] Bijoy TV
-2026-08-07 19:09:51,703 [INFO] 🟢 OK: [Bangla] My TV
-2026-08-07 19:09:51,718 [INFO] 🟢 OK: [Bangla] BTV World
-2026-08-07 19:09:51,725 [INFO] 🟢 OK: [Sports] Sports 1
-2026-08-07 19:09:51,810 [INFO] 🟢 OK: [Bangla] Ananda TV
-2026-08-07 19:09:51,837 [INFO] 🟢 OK: [Entertainment] Global TV HD
-2026-08-07 19:09:51,995 [INFO] 🟢 OK: [News] BTV News
-2026-08-07 19:09:52,035 [INFO] 🟢 OK: [Movies] Bangla TV HD
-2026-08-07 19:09:52,098 [INFO] 🟢 OK: [Discover] Discovery HD
-2026-08-07 19:09:52,228 [INFO] 🟢 OK: [Bangla] BTV CTG
-2026-08-07 19:09:52,371 [INFO] 🟢 OK: [Movie] Shemaroo Bollywood
-2026-08-07 19:09:52,512 [INFO] 🟢 OK: [Entertainment] ATN Bangla
-2026-08-07 19:09:52,561 [INFO] 🟢 OK: [Bangla] Rupshi Bangla
-2026-08-07 19:09:52,704 [INFO] 🟢 OK: [News] Somoy TV
-2026-08-07 19:09:52,854 [INFO] 🟢 OK: [Entertainment] Enter TV
-2026-08-07 19:09:52,944 [INFO] 🟢 OK: [Entertainment] Quran (CriticX Islamic)
-2026-08-07 19:09:52,973 [INFO] 🟢 OK: [Discover] National Geographic HD
-2026-08-07 19:09:52,997 [INFO] 🟢 OK: [Discover] Animal Plant HD
-2026-08-07 19:09:53,250 [INFO] 🟢 OK: [Entertainment] ME TV
-2026-08-07 19:09:53,957 [INFO] 🟢 OK: [Movies] Zee Cinema HD
-2026-08-07 19:09:54,256 [INFO] 🟢 OK: [Entertainment] Zee Bangla HD
-2026-08-07 19:09:54,896 [INFO] 🟢 OK: [News] Somoy News HD
-2026-08-07 19:09:54,969 [INFO] 🟢 OK: [News] Sky News Weather
-2026-08-07 19:09:55,282 [INFO] 🟢 OK: [Movies] জলসা Movies HD
-2026-08-07 19:09:55,865 [INFO] 🟢 OK: [Music] 8XM
-2026-08-07 19:09:56,118 [INFO] 🟢 OK: [Sports] DD Sports
-2026-08-07 19:09:56,581 [INFO] 🟢 OK: [Entertainment] Sun Bangla HD
-2026-08-07 19:10:01,050 [INFO] 📊 Progress: Checked 264 / 264
-2026-08-07 19:10:01,059 [INFO] 💾 Sorting and saving results to file...
-2026-08-07 19:10:01,060 [INFO] 🎉 Done! Working: 166 | Dead: 98
+2026-08-07 19:26:44,509 [INFO] 🚀 Starting Pro M3U Checker...
+2026-08-07 19:26:44,580 [INFO] ✅ Loaded: https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u
+2026-08-07 19:26:44,594 [INFO] ✅ Loaded: https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u
+2026-08-07 19:26:44,594 [INFO] ✅ Loaded: https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u
+2026-08-07 19:26:44,617 [INFO] ✅ Loaded: https://m3u-tvb.pages.dev/ayna+.m3u
+2026-08-07 19:26:46,110 [INFO] ✅ Loaded: http://alixbd.com/5055.m3u
+2026-08-07 19:26:46,111 [INFO] ✅ Found 452 unique streams. Starting validation...
+2026-08-07 19:26:48,364 [INFO] 🟢 OK: [Cartoon] Gopal Bhar
+2026-08-07 19:26:48,390 [INFO] 🟢 OK: [Cartoon] Motu Patlu
+2026-08-07 19:26:48,420 [INFO] 🟢 OK: [Cartoon] Sony Aath
+2026-08-07 19:26:48,421 [INFO] 🟢 OK: [Kids] Tom & Zerry
+2026-08-07 19:26:48,571 [INFO] 🟢 OK: [Kids] Kids TV
+2026-08-07 19:26:48,602 [INFO] 🟢 OK: [Sports] CazeTv 1080p
+2026-08-07 19:26:48,603 [INFO] 🟢 OK: [Sports] DAZN 5
+2026-08-07 19:26:48,605 [INFO] 🟢 OK: [Documentry] Travelxp
+2026-08-07 19:26:48,764 [INFO] 🟢 OK: [Documentry] Discovery HD
+2026-08-07 19:26:48,860 [INFO] 🟢 OK: [Movie] Gold Mines Movie
+2026-08-07 19:26:48,924 [INFO] 🟢 OK: [Entertainment] Green TV HD
+2026-08-07 19:26:48,958 [INFO] 🟢 OK: [Kids] Cartoon Network
+2026-08-07 19:26:49,038 [INFO] 🟢 OK: [Sports] Bein Sports Xtra
+2026-08-07 19:26:49,051 [INFO] 🟢 OK: [Entertainment] Ananda TV
+2026-08-07 19:26:49,075 [INFO] 🟢 OK: [Sports] Bein sports 3
+2026-08-07 19:26:49,110 [INFO] 🟢 OK: [Entertainment] Star Jalsha HD(Test Mode)
+2026-08-07 19:26:49,141 [INFO] 🟢 OK: [Sports] Bein Sports Xtra HD
+2026-08-07 19:26:49,182 [INFO] 🟢 OK: [Entertainment] ATN Bangla HD
+2026-08-07 19:26:49,187 [INFO] 🟢 OK: [Entertainment] My TV HD
+2026-08-07 19:26:49,291 [INFO] 🟢 OK: [Discover] BBC Earth HD
+2026-08-07 19:26:49,319 [INFO] 🟢 OK: [Entertainment] DD Bangla
+2026-08-07 19:26:49,397 [INFO] 🟢 OK: [Music] Baallee Music
+2026-08-07 19:26:49,415 [INFO] 🟢 OK: [Entertainment] Enterten Bangla HD
+2026-08-07 19:26:49,470 [INFO] 🟢 OK: [News] Gazi Tv
+2026-08-07 19:26:49,510 [INFO] 🟢 OK: [Sports] Eurosports 2
+2026-08-07 19:26:49,633 [INFO] 🟢 OK: [Sports] T sports
+2026-08-07 19:26:49,800 [INFO] 🟢 OK: [Entertainment] Colors Bangla HD
+2026-08-07 19:26:50,040 [INFO] 🟢 OK: [Movies] Goldmines Bollywood
+2026-08-07 19:26:50,309 [INFO] 🟢 OK: [Sports] FOX Sports 1
+2026-08-07 19:26:50,349 [INFO] 🟢 OK: [Cartoon] Oggy HD
+2026-08-07 19:26:50,536 [INFO] 🟢 OK: [Sports] Sports 1
+2026-08-07 19:26:50,585 [INFO] 🟢 OK: [Entertainment] RTV HD
+2026-08-07 19:26:50,718 [INFO] 🟢 OK: [Discover] National Geographic HD
+2026-08-07 19:26:50,802 [INFO] 🟢 OK: [Movie] Shemaroo Bollywood
+2026-08-07 19:26:50,897 [INFO] 🟢 OK: [Discover] Discovery HD
+2026-08-07 19:26:50,917 [INFO] 🟢 OK: [Documentry] Real Wild
+2026-08-07 19:26:51,044 [INFO] 🟢 OK: [Cartoon] Cartoon Network USA
+2026-08-07 19:26:51,088 [INFO] 🟢 OK: [Discover] Animal Plant HD
+2026-08-07 19:26:51,320 [INFO] 🟢 OK: [Entertainment] Quran (CriticX Islamic)
+2026-08-07 19:26:51,332 [INFO] 🟢 OK: [Movie] Zee Cinema HD
+2026-08-07 19:26:51,448 [INFO] 🟢 OK: [Music] Sangeet Bangla
+2026-08-07 19:26:51,537 [INFO] 🟢 OK: [Discover] Discovery HD 2
+2026-08-07 19:26:51,624 [INFO] 🟢 OK: [Movie] HBO Max 1
+2026-08-07 19:26:51,716 [INFO] 🟢 OK: [Sports] Star Sports 1 HD
+2026-08-07 19:26:51,988 [INFO] 🟢 OK: [Drama] G Series
+2026-08-07 19:26:52,053 [INFO] 🟢 OK: [Movies] Bangla TV HD
+2026-08-07 19:26:52,094 [INFO] 🟢 OK: [News] News 21 HD
+2026-08-07 19:26:52,106 [INFO] 🟢 OK: [Uncategorized] Test Pogram
+2026-08-07 19:26:52,280 [INFO] 🟢 OK: [Sports] LaLiga Tv Hd
+2026-08-07 19:26:52,424 [INFO] 🟢 OK: [Cartoon] Sony YaY
+2026-08-07 19:26:53,272 [INFO] 🟢 OK: [Sports] DD Sports
+2026-08-07 19:26:53,317 [INFO] 🟢 OK: [Music] 8XM
+2026-08-07 19:26:53,384 [INFO] 🟢 OK: [Entertainment] NTV HD
+2026-08-07 19:26:53,501 [INFO] 🟢 OK: [Entertainment] DD Bangla
+2026-08-07 19:26:53,629 [INFO] 🟢 OK: [Entertainment] ATN Bangla
+2026-08-07 19:26:53,651 [INFO] 🟢 OK: [Movies] Star Gold HD
+2026-08-07 19:26:53,668 [INFO] 🟢 OK: [Movies] Z Bangla Sonar HD
+2026-08-07 19:26:53,710 [INFO] 🟢 OK: [Entertainment] Boishakhi TV
+2026-08-07 19:26:53,978 [INFO] 🟢 OK: [Entertainment] SRK TV
+2026-08-07 19:26:54,185 [INFO] 🟢 OK: [News] Somoy News HD
+2026-08-07 19:26:54,229 [INFO] 🟢 OK: [Sports] T Sports HD
+2026-08-07 19:26:54,244 [INFO] 🟢 OK: [Movies] Zee Cinema HD
+2026-08-07 19:26:54,289 [INFO] 🟢 OK: [Entertainment] Sun Bangla Hd
+2026-08-07 19:26:54,307 [INFO] 🟢 OK: [Entertainment] Enter TV
+2026-08-07 19:26:54,512 [INFO] 🟢 OK: [Bangla Drama] Double Pressure
+2026-08-07 19:26:54,644 [INFO] 🟢 OK: [News] Ekhon HD
+2026-08-07 19:26:54,755 [INFO] 🟢 OK: [Bangla Drama] Kakkur Tiktokar Bou
+2026-08-07 19:26:54,851 [INFO] 🟢 OK: [Bangla Drama] Digital Hablu
+2026-08-07 19:26:54,862 [INFO] 🟢 OK: [Movies] SOB PREMER GOLPO EK NOY
+2026-08-07 19:26:54,961 [INFO] 🟢 OK: [Entertainment] Global TV HD
+2026-08-07 19:26:54,966 [INFO] 🟢 OK: [Movies] Hollywood Action Movies
+2026-08-07 19:26:55,019 [INFO] 🟢 OK: [Bangla Drama] Bibek Mojid
+2026-08-07 19:26:55,087 [INFO] 🟢 OK: [Movies] Sohorer Kokkhopothe
+2026-08-07 19:26:55,089 [INFO] 🟢 OK: [Movies] Rong Penci
+2026-08-07 19:26:55,204 [INFO] 🟢 OK: [Movies] Thik Thikana
+2026-08-07 19:26:55,208 [INFO] 🟢 OK: [Movies] Shob Charitro Kalponik Noy
+2026-08-07 19:26:55,361 [INFO] 🟢 OK: [Bangla Drama] Iti Rudra
+2026-08-07 19:26:55,369 [INFO] 🟢 OK: [Bangla Drama] Opochonder Saat Din
+2026-08-07 19:26:55,403 [INFO] 🟢 OK: [Bangla Drama] Chawa Pawa
+2026-08-07 19:26:55,433 [INFO] 🟢 OK: [Bangla Drama] Amader Pasher Barita
+2026-08-07 19:26:55,499 [INFO] 🟢 OK: [Bangla Drama] Vul Naki Prem
+2026-08-07 19:26:55,514 [INFO] 🟢 OK: [Bangla Drama] Half Bottle
+2026-08-07 19:26:55,516 [INFO] 🟢 OK: [Bangla Drama] Tomaroi Thakbo
+2026-08-07 19:26:55,537 [INFO] 🟢 OK: [Bangla Drama] Punorabritti
+2026-08-07 19:26:55,546 [INFO] 🟢 OK: [Bangla Drama] Kabjab
+2026-08-07 19:26:55,584 [INFO] 🟢 OK: [Bangla Drama] Je Poth Bhule Gecho Tumi
+2026-08-07 19:26:55,604 [INFO] 🟢 OK: [Entertainment] ME TV
+2026-08-07 19:26:55,606 [INFO] 🟢 OK: [Bangla Drama] Paparazzi
+2026-08-07 19:26:55,609 [INFO] 🟢 OK: [Bangla Drama] Poroma Sundori
+2026-08-07 19:26:55,640 [INFO] 🟢 OK: [Bangla Drama] Barir Choto Chele
+2026-08-07 19:26:55,652 [INFO] 🟢 OK: [Bangla Drama] Kuhu Kotha
+2026-08-07 19:26:55,662 [INFO] 🟢 OK: [Movies] জলসা Movies HD
+2026-08-07 19:26:55,674 [INFO] 🟢 OK: [Bangla Drama] Tomar Chokhe Cheye
+2026-08-07 19:26:55,842 [INFO] 🟢 OK: [Bangla Drama] Megh Na Chaitei Bristi
+2026-08-07 19:26:55,842 [INFO] 🟢 OK: [Bangla Drama] Unmanush
+2026-08-07 19:26:55,855 [INFO] 🟢 OK: [Bangla Drama] Putuler Shongshar
+2026-08-07 19:26:55,946 [INFO] 🟢 OK: [Bangla Drama] Dakpion
+2026-08-07 19:26:55,963 [INFO] 🟢 OK: [Bangla Drama] Ajmol Khaner Double Bou
+2026-08-07 19:26:55,978 [INFO] 🟢 OK: [Bangla Drama] Hasu Chor Kasu Chor
+2026-08-07 19:26:55,995 [INFO] 🟢 OK: [Bangla Drama] Phinix Pakhir Gaan
+2026-08-07 19:26:55,996 [INFO] 🟢 OK: [Bangla Drama] Mugdho Bekoron
+2026-08-07 19:26:56,050 [INFO] 🟢 OK: [Entertainment] Zee Bangla HD
+2026-08-07 19:26:56,076 [INFO] 🟢 OK: [Bangla Drama] Ekti Shukhobor
+2026-08-07 19:26:56,113 [INFO] 🟢 OK: [Bangla Drama] Josnar Shopno
+2026-08-07 19:26:56,117 [INFO] 🟢 OK: [Bangla Drama] Songshar Amar Valo Lage Na
+2026-08-07 19:26:56,224 [INFO] 🟢 OK: [Bangla Drama] Sweet Crush
+2026-08-07 19:26:56,402 [INFO] 🟢 OK: [Bangla Drama] Mayasri
+2026-08-07 19:26:56,403 [INFO] 🟢 OK: [Bangla Drama] Chokro
+2026-08-07 19:26:56,503 [INFO] 🟢 OK: [Bangla Drama] Joto Dosh Nondo Ghosh
+2026-08-07 19:26:56,575 [INFO] 🟢 OK: [Bangla Drama] No More Friends
+2026-08-07 19:26:56,638 [INFO] 🟢 OK: [Bangla Drama] Laughing Gas
+2026-08-07 19:26:56,698 [INFO] 🟢 OK: [News] ABN
+2026-08-07 19:26:56,766 [INFO] 🟢 OK: [Bangla Drama] Couple Crisis
+2026-08-07 19:26:56,842 [INFO] 🟢 OK: [News] Weather SPY
+2026-08-07 19:26:57,142 [INFO] 🟢 OK: [Bangla Drama] View
+2026-08-07 19:26:57,142 [INFO] 🟢 OK: [Bangla Drama] Mounobroto
+2026-08-07 19:26:57,144 [INFO] 🟢 OK: [Bangla Drama] Vul Manush
+2026-08-07 19:26:57,270 [INFO] 🟢 OK: [Bangla Drama] Niyoti
+2026-08-07 19:26:57,353 [INFO] 🟢 OK: [Bangla Drama] Barishailla Graduate
+2026-08-07 19:26:57,361 [INFO] 🟢 OK: [Bangla] Jhankar.tv
+2026-08-07 19:26:57,377 [INFO] 🟢 OK: [Bangla] Deshi TV
+2026-08-07 19:26:57,414 [INFO] 🟢 OK: [Bangla Drama] Golper Ekmatro Agantuk
+2026-08-07 19:26:57,526 [INFO] 🟢 OK: [Bangla Drama] Bad Patient
+2026-08-07 19:26:57,575 [INFO] 🟢 OK: [Bangla Drama] Amar Kotha Ekbaro Vable Na
+2026-08-07 19:26:57,882 [INFO] 🟢 OK: [Trending Live Tvs] Channel I
+2026-08-07 19:26:57,973 [INFO] 🟢 OK: [Trending Live Tvs] PTV Sports
+2026-08-07 19:26:58,069 [INFO] 🟢 OK: [News] Fox Weather
+2026-08-07 19:26:58,071 [INFO] 🟢 OK: [News] Iran Press
+2026-08-07 19:26:58,116 [INFO] 🟢 OK: [Bangla Drama] DAY OUT
+2026-08-07 19:26:58,142 [INFO] 🟢 OK: [Trending Live Tvs] Unite8 Sports 2
+2026-08-07 19:26:58,175 [INFO] 🟢 OK: [Sports] Bleav Football
+2026-08-07 19:26:58,188 [INFO] 🟢 OK: [News] Accu Weather
+2026-08-07 19:26:58,404 [INFO] 🟢 OK: [News] BBC News
+2026-08-07 19:26:58,702 [INFO] 🟢 OK: [Kids] Doraemon TV
+2026-08-07 19:26:58,810 [INFO] 🟢 OK: [Trending Live Tvs] TSN 1
+2026-08-07 19:26:58,836 [INFO] 🟢 OK: [Bangla] Gseries Drama
+2026-08-07 19:26:58,911 [INFO] 🟢 OK: [Bangla] Rajdhani TV
+2026-08-07 19:26:59,005 [INFO] 🟢 OK: [Trending Live Tvs] BTV NATIONAL HD
+2026-08-07 19:26:59,137 [INFO] 🟢 OK: [Bangla] Metv
+2026-08-07 19:26:59,199 [INFO] 🟢 OK: [Islamic] Al Quran Radio
+2026-08-07 19:26:59,420 [INFO] 🟢 OK: [Trending Live Tvs] ATN News
+2026-08-07 19:26:59,470 [INFO] 🟢 OK: [Bangla] SRK TV
+2026-08-07 19:26:59,598 [INFO] 🟢 OK: [Sports] TSN 2
+2026-08-07 19:26:59,614 [INFO] 🟢 OK: [News] PTV
+2026-08-07 19:26:59,631 [INFO] 🟢 OK: [Bangla] BTV News
+2026-08-07 19:26:59,657 [INFO] 🟢 OK: [Sports] Star-sports-2
+2026-08-07 19:26:59,666 [INFO] 🟢 OK: [Sports] TSN 3
+2026-08-07 19:26:59,696 [INFO] 🟢 OK: [Channels] RTV
+2026-08-07 19:26:59,731 [INFO] 🟢 OK: [Bangla] Jamuna
+2026-08-07 19:26:59,732 [INFO] 🟢 OK: [Sports] Sony-sports-3
+2026-08-07 19:26:59,754 [INFO] 🟢 OK: [Channels] DBC News
+2026-08-07 19:26:59,850 [INFO] 🟢 OK: [Sports] Star-select-2
+2026-08-07 19:26:59,880 [INFO] 🟢 OK: [Trending Live Tvs] ATN Bangla
+2026-08-07 19:26:59,905 [INFO] 🟢 OK: [Bangla] ATN Bangla
+2026-08-07 19:26:59,954 [INFO] 🟢 OK: [Sports] NFL Network
+2026-08-07 19:27:00,026 [INFO] 🟢 OK: [Channels] ETV
+2026-08-07 19:27:00,027 [INFO] 🟢 OK: [Islamic] Quran
+2026-08-07 19:27:00,068 [INFO] 🟢 OK: [Sports] Star-sports-3
+2026-08-07 19:27:00,130 [INFO] 🟢 OK: [Islamic] AL SUNNAH TV
+2026-08-07 19:27:00,131 [INFO] 🟢 OK: [Sports] Unite8-sports-2
+2026-08-07 19:27:00,202 [INFO] 🟢 OK: [Sports] Star-select-1
+2026-08-07 19:27:00,230 [INFO] 🟢 OK: [Trending Live Tvs] Bangla Vision
+2026-08-07 19:27:00,230 [INFO] 🟢 OK: [Channels] News 24 BD
+2026-08-07 19:27:00,238 [INFO] 🟢 OK: [Bangla] ETV
+2026-08-07 19:27:00,299 [INFO] 🟢 OK: [Indian] Sananda
+2026-08-07 19:27:00,305 [INFO] 🟢 OK: [Sports] Star-sports-1
+2026-08-07 19:27:00,427 [INFO] 🟢 OK: [Channels] Jamuna TV
+2026-08-07 19:27:00,431 [INFO] 🟢 OK: [Sports] T Sports HD
+2026-08-07 19:27:00,433 [INFO] 🟢 OK: [Channels] Ekattor TV
+2026-08-07 19:27:00,475 [INFO] 🟢 OK: [Indian] Colors bangla
+2026-08-07 19:27:00,631 [INFO] 🟢 OK: [Bangla] Boishakhi TV
+2026-08-07 19:27:00,643 [INFO] 🟢 OK: [Bangla] Ananda TV
+2026-08-07 19:27:00,661 [INFO] 🟢 OK: [Sports] TSN 1
+2026-08-07 19:27:00,834 [INFO] 🟢 OK: [Islamic] Sunnah Tv
+2026-08-07 19:27:00,886 [INFO] 🟢 OK: [Bangla] Duronto TV
+2026-08-07 19:27:00,888 [INFO] 🟢 OK: [Bangla] SA TV
+2026-08-07 19:27:00,897 [INFO] 🟢 OK: [Bangla] Desh TV
+2026-08-07 19:27:00,923 [INFO] 🟢 OK: [Indian] Colors HD
+2026-08-07 19:27:00,923 [INFO] 🟢 OK: [Indian] Sony 8
+2026-08-07 19:27:00,923 [INFO] 🟢 OK: [Indian] Star Jalsha
+2026-08-07 19:27:00,994 [INFO] 🟢 OK: [Sports] Golf Channel
+2026-08-07 19:27:01,008 [INFO] 🟢 OK: [Indian] Colors Bangla Cinema
+2026-08-07 19:27:01,033 [INFO] 🟢 OK: [Bangla] BTV National HD
+2026-08-07 19:27:01,033 [INFO] 🟢 OK: [Bangla] Asian TV
+2026-08-07 19:27:01,052 [INFO] 🟢 OK: [Indian] Star Gold
+2026-08-07 19:27:01,063 [INFO] 🟢 OK: [Islamic] QURAN RADIOTV SMC
+2026-08-07 19:27:01,064 [INFO] 🟢 OK: [News] Amc
+2026-08-07 19:27:01,064 [INFO] 🟢 OK: [Bangla] Bangla TV
+2026-08-07 19:27:01,064 [INFO] 🟢 OK: [Indian] Z Cinema HD
+2026-08-07 19:27:01,069 [INFO] 🟢 OK: [News] Bloomberg TV
+2026-08-07 19:27:01,073 [INFO] 🟢 OK: [Indian] Star Plus HD
+2026-08-07 19:27:01,073 [INFO] 🟢 OK: [Sports] ESPN
+2026-08-07 19:27:01,074 [INFO] 🟢 OK: [Bangla] Mohona TV
+2026-08-07 19:27:01,075 [INFO] 🟢 OK: [Indian] Jalsha Movies
+2026-08-07 19:27:01,091 [INFO] 🟢 OK: [Bangla] My TV
+2026-08-07 19:27:01,095 [INFO] 🟢 OK: [Bangla] Rupshi Bangla
+2026-08-07 19:27:01,169 [INFO] 🟢 OK: [Bangla] MY TV
+2026-08-07 19:27:01,365 [INFO] 🟢 OK: [Movies] Star Movies HD
+2026-08-07 19:27:01,616 [INFO] 🟢 OK: [Movies] Star Movies Select
+2026-08-07 19:27:01,705 [INFO] 🟢 OK: [Bangla] Ananda TV
+2026-08-07 19:27:01,706 [INFO] 🟢 OK: [Bangla] BTV World
+2026-08-07 19:27:01,706 [INFO] 🟢 OK: [News] Somoy TV
+2026-08-07 19:27:01,742 [INFO] 🟢 OK: [Bangla] Sangeet Bangla
+2026-08-07 19:27:01,742 [INFO] 🟢 OK: [Sports] TNT Sport 1
+2026-08-07 19:27:01,744 [INFO] 🟢 OK: [Bangla] Bijoy TV
+2026-08-07 19:27:01,744 [INFO] 🟢 OK: [Bangla] Rtv
+2026-08-07 19:27:01,770 [INFO] 🟢 OK: [Bangla] Rupshi Bangla
+2026-08-07 19:27:01,779 [INFO] 🟢 OK: [Sports] Cricket Gold
+2026-08-07 19:27:01,792 [INFO] 🟢 OK: [Bangla] BTV CTG
+2026-08-07 19:27:01,793 [INFO] 🟢 OK: [Documentary] Historytv18
+2026-08-07 19:27:01,794 [INFO] 🟢 OK: [Bangla] Channel S
+2026-08-07 19:27:01,846 [INFO] 🟢 OK: [News] Sky News Weather
+2026-08-07 19:27:01,949 [INFO] 🟢 OK: [Kids] Mr Bean Animated
+2026-08-07 19:27:01,996 [INFO] 🟢 OK: [News] BTV News
+2026-08-07 19:27:02,337 [INFO] 🟢 OK: [Islamic] AL EKHBARIA
+2026-08-07 19:27:02,526 [INFO] 🟢 OK: [News] Sky News
+2026-08-07 19:27:02,915 [INFO] 🟢 OK: [Movies] HBO 2
+2026-08-07 19:27:02,945 [INFO] 🟢 OK: [News] Wion
+2026-08-07 19:27:02,966 [INFO] 🟢 OK: [Sports] TSN 3
+2026-08-07 19:27:03,102 [INFO] 🟢 OK: [Sports] Willow
+2026-08-07 19:27:03,217 [INFO] 🟢 OK: [Kids] PBS Kids
+2026-08-07 19:27:03,261 [INFO] 🟢 OK: [News] BBC NEWS
+2026-08-07 19:27:03,275 [INFO] 🟢 OK: [Sports] Bein Sports 1
+2026-08-07 19:27:03,462 [INFO] 🟢 OK: [Islamic] Live Quran TV
+2026-08-07 19:27:03,604 [INFO] 🟢 OK: [Bangla] Madani Channel
+2026-08-07 19:27:04,004 [INFO] 🟢 OK: [Bangla] SATV
+2026-08-07 19:27:04,032 [INFO] 🟢 OK: [Sports] TSN 2
+2026-08-07 19:27:04,099 [INFO] 🟢 OK: [News] ABC NEWS
+2026-08-07 19:27:04,361 [INFO] 🟢 OK: [Kids] Duronto TV
+2026-08-07 19:27:04,493 [INFO] 🟢 OK: [News] TRT World
+2026-08-07 19:27:04,730 [INFO] 🟢 OK: [Bangla] BTV CTG
+2026-08-07 19:27:04,891 [INFO] 🟢 OK: [Indian] &TV
+2026-08-07 19:27:04,936 [INFO] 🟢 OK: [Latest] Court TV
+2026-08-07 19:27:05,162 [INFO] 🟢 OK: [Bangla] Channel I
+2026-08-07 19:27:05,206 [INFO] 🟢 OK: [Channels] InTravel
+2026-08-07 19:27:05,299 [INFO] 🟢 OK: [Bangla] ETV
+2026-08-07 19:27:05,366 [INFO] 🟢 OK: [Movie] Persiana Korea
+2026-08-07 19:27:05,426 [INFO] 🟢 OK: [Movies] HBO
+2026-08-07 19:27:05,480 [INFO] 🟢 OK: [Bangla] Asian TV
+2026-08-07 19:27:05,512 [INFO] 🟢 OK: [Bangla] Boishakhi TV
+2026-08-07 19:27:05,613 [INFO] 🟢 OK: [Islamic] Saudia Arabia
+2026-08-07 19:27:05,636 [INFO] 🟢 OK: [Bangla] SA TV
+2026-08-07 19:27:05,749 [INFO] 🟢 OK: [News] TV9 Bangla
+2026-08-07 19:27:05,839 [INFO] 🟢 OK: [Bangla] Bangla TV
+2026-08-07 19:27:05,897 [INFO] 🟢 OK: [Bangla] My TV
+2026-08-07 19:27:05,945 [INFO] 🟢 OK: [News] Sky News
+2026-08-07 19:27:05,982 [INFO] 🟢 OK: [Bangla] Ananda TV
+2026-08-07 19:27:06,049 [INFO] 🟢 OK: [Bangla] BTV NATIONAL HD
+2026-08-07 19:27:06,060 [INFO] 🟢 OK: [Bangla] Bijoy TV
+2026-08-07 19:27:06,070 [INFO] 🟢 OK: [Islamic] BAHRAIN QURAN
+2026-08-07 19:27:06,075 [INFO] 🟢 OK: [News] ABC News
+2026-08-07 19:27:06,085 [INFO] 🟢 OK: [News] DBC News
+2026-08-07 19:27:06,093 [INFO] 🟢 OK: [Bangla] BTV CTG
+2026-08-07 19:27:06,174 [INFO] 🟢 OK: [News] News 24 BD
+2026-08-07 19:27:06,202 [INFO] 🟢 OK: [Bangla] RTV
+2026-08-07 19:27:06,290 [INFO] 🟢 OK: [Sports] Golf Channel
+2026-08-07 19:27:06,292 [INFO] 🟢 OK: [Bangla] Mohona TV
+2026-08-07 19:27:06,301 [INFO] 🟢 OK: [Bangla] BTV World
+2026-08-07 19:27:06,348 [INFO] 🟢 OK: [Sports] Espn
+2026-08-07 19:27:06,363 [INFO] 🟢 OK: [Kids] Disney Channel
+2026-08-07 19:27:06,427 [INFO] 🟢 OK: [News] Ekattor TV
+2026-08-07 19:27:06,445 [INFO] 🟢 OK: [Sports] Bein Sports
+2026-08-07 19:27:06,473 [INFO] 🟢 OK: [Bangla] ATN Bangla
+2026-08-07 19:27:06,526 [INFO] 🟢 OK: [News] BTV News
+2026-08-07 19:27:06,538 [INFO] 🟢 OK: [Bangla] Drama 24
+2026-08-07 19:27:06,545 [INFO] 🟢 OK: [Sports] NFL Network
+2026-08-07 19:27:06,546 [INFO] 🟢 OK: [Channels] AXS
+2026-08-07 19:27:06,726 [INFO] 🟢 OK: [Sports] Bloomberg TV
+2026-08-07 19:27:06,733 [INFO] 🟢 OK: [Sports] A sports
+2026-08-07 19:27:06,762 [INFO] 🟢 OK: [English] Fox 5
+2026-08-07 19:27:06,778 [INFO] 🟢 OK: [Sports] Sports Grid
+2026-08-07 19:27:06,797 [INFO] 🟢 OK: [Channels] kolkata TV
+2026-08-07 19:27:06,814 [INFO] 🟢 OK: [English] Food Network
+2026-08-07 19:27:06,834 [INFO] 🟢 OK: [English] Nat Geo TV
+2026-08-07 19:27:06,914 [INFO] 🟢 OK: [English] Fox business
+2026-08-07 19:27:07,042 [INFO] 🟢 OK: [English] MTV
+2026-08-07 19:27:07,054 [INFO] 🟢 OK: [English] CNBC TV
+2026-08-07 19:27:07,058 [INFO] 🟢 OK: [Sports] Talk Sport
+2026-08-07 19:27:07,069 [INFO] 🟢 OK: [Sports] Willow TV
+2026-08-07 19:27:07,072 [INFO] 🟢 OK: [English] USA TV
+2026-08-07 19:27:07,088 [INFO] 🟢 OK: [Sports] Cricket Gold
+2026-08-07 19:27:07,111 [INFO] 🟢 OK: [Channels] 4k Travel
+2026-08-07 19:27:07,155 [INFO] 🟢 OK: [English] TLC HD
+2026-08-07 19:27:07,174 [INFO] 🟢 OK: [English] Travel Channel
+2026-08-07 19:27:07,293 [INFO] 🟢 OK: [Documentary] Animal Planet HD
+2026-08-07 19:27:07,303 [INFO] 🟢 OK: [News] DW News
+2026-08-07 19:27:07,319 [INFO] 🟢 OK: [Sports] Marquee Sports Network
+2026-08-07 19:27:07,510 [INFO] 🟢 OK: [Kids] Cartoon Network
+2026-08-07 19:27:07,543 [INFO] 🟢 OK: [Kids] Nicktoons
+2026-08-07 19:27:07,683 [INFO] 🟢 OK: [Kids] Moonbug Kids
+2026-08-07 19:27:07,832 [INFO] 🟢 OK: [English] Discovery Family
+2026-08-07 19:27:07,875 [INFO] 🟢 OK: [Kids] YTV
+2026-08-07 19:27:07,969 [INFO] 🟢 OK: [Kids] Nickjr
+2026-08-07 19:27:08,198 [INFO] 🟢 OK: [Kids] 3ABN Kids
+2026-08-07 19:27:08,220 [INFO] 🟢 OK: [Religious] Eman Channel
+2026-08-07 19:27:08,335 [INFO] 🟢 OK: [Indian Bangla] Enter 10 Bangla
+2026-08-07 19:27:08,900 [INFO] 🟢 OK: [Hindi] Rongeen TV
+2026-08-07 19:27:08,949 [INFO] 🟢 OK: [English] Action Hollywood Movies
+2026-08-07 19:27:09,009 [INFO] 🟢 OK: [Sports] Xtrem Sports
+2026-08-07 19:27:09,083 [INFO] 🟢 OK: [Sports] KTV Sport Plus
+2026-08-07 19:27:09,142 [INFO] 🟢 OK: [Weather] Discover Paikstan
+2026-08-07 19:27:12,832 [INFO] 📊 Progress: Checked 452 / 452
+2026-08-07 19:27:12,842 [INFO] 💾 Sorting and saving results to file...
+2026-08-07 19:27:12,843 [INFO] 🎉 Done! Working: 301 | Dead: 151

@@ -256,10 +256,8 @@ class M3UProcessor:
             online_count = len(self.working_channels)
             
             # ইনফো চ্যানেল তৈরি
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 📁 Total Playlist Checked: {self.total_playlists}\nhttp://dummy.link/1\n')
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🟢 Online Channels: {online_count}\nhttp://dummy.link/2\n')
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🔴 Dead Channels: {self.dead_count}\nhttp://dummy.link/3\n')
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 👑 Made By All in one reborn\nhttp://dummy.link/4\n')
+             f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🟢 Online Channels: {online_count}\nhttp://dummy.link/2\n')
+              f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 👑 Made By All in one reborn\nhttp://dummy.link/4\n')
             f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", ✈️ Telegram: https://t.me/allonebd\nhttp://dummy.link/5\n')
             f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🌐 Web: https://www.ratulxlive.duckdns.org/\nhttp://dummy.link/6\n')
 

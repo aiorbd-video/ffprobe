@@ -5,6 +5,7 @@ import shutil
 import logging
 import random
 from urllib.parse import urlparse
+import sys
 
 # --- কনফিগারেশন ---
 M3U_SOURCES = [
@@ -35,7 +36,6 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/iptv-org/iptv/refs/heads/master/streams/in_doordarshan.m3u",
     "https://playlists-by-playztv.pages.dev/wavesno.m3u",
     "https://playztv-ol-pl.deadxploit.workers.dev/?get-pl&id=pishowxc.m3u",
-  
     "https://playlists-by-playztv.pages.dev/dangalp.m3u",
     "https://playlists-by-playztv.pages.dev/mxp.m3u",
     "https://pzsl.pzcdn.workers.dev/?get-pl",
@@ -77,10 +77,9 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/lucaswyte/iptv/ae8de55d61b66f29e0f2b0ea05fd0e926c0c4042/vizio.m3u8",
     "https://raw.githubusercontent.com/IPTVFlixBD/OopsTv/refs/heads/main/bd-test.m3u",
     "https://m3u-tvb.pages.dev/ayna+.m3u",
-    
     "https://raw.githubusercontent.com/srhady/willow-event/refs/heads/main/primevideo_sports.m3u",
 
-    # --- Invisible / Broken / Backend Links (JSON-এ visible:false ছিল) ---
+    # --- Invisible / Broken / Backend Links ---
     "https://m3u-tvb.pages.dev/akk-iptv.m3u8",
     "https://pastebin.com/raw/3fefFwep",
     "https://raw.githubusercontent.com/abusaeeidx/IPTV-Scraper-Zilla/refs/heads/main/Moveonjoy.m3u",
@@ -116,7 +115,6 @@ M3U_SOURCES = [
     "https://tattistar.vercel.app/jhs.m3u",
     "https://m3u-tvb.pages.dev/BOSS-BDIX.m3u",
     "https://raw.githubusercontent.com/eishakilei-bd08/soha/refs/heads/main/t.m3u",
-    
     "https://m3u-tvb.pages.dev/XOTT_16032026_2107fk.m3u",
     "https://raw.githubusercontent.com/srhady/fifaplus/refs/heads/main/fifa_live.m3u",
     "https://ay2.playztv.workers.dev/?key=plz_lock_2026",
@@ -131,7 +129,7 @@ M3U_SOURCES = [
 ]
 
 WORKING_FILE = "working.m3u"
-CONCURRENCY_LIMIT = 100  # একসাথে ১০০টি রিকোয়েস্ট (Async এর জন্য এটা নিরাপদ)
+CONCURRENCY_LIMIT = 100  # একসাথে ১০০টি রিকোয়েস্ট
 HTTP_TIMEOUT = 5         # প্রাথমিক HTTP চেকের জন্য টাইমআউট
 FFPROBE_TIMEOUT = 8      # FFprobe এর জন্য টাইমআউট
 
@@ -203,18 +201,16 @@ class M3UProcessor:
         async with semaphore:
             headers = {"User-Agent": self.get_random_ua()}
             
-            # স্টেপ ১: ফাস্ট HTTP চেক (সার্ভার রেসপন্স করে কি না)
+            # স্টেপ ১: ফাস্ট HTTP চেক
             try:
-                # হেড রিকোয়েস্ট অনেক ফাস্ট, পুরো ভিডিও টানে না
                 async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
                     if resp.status not in [200, 302, 301]:
                         self.dead_count += 1
                         return
             except Exception:
-                # হেড ফেইল করলেও কিছু আইপিটিভি GET এ কাজ করে, তাই সরাসরি ব্লক করছি না
                 pass
 
-            # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক (শুধুমাত্র যদি HTTP মোটামুটি ঠিক থাকে)
+            # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক
             cmd = [
                 "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
                 "-show_entries", "stream=codec_type",
@@ -222,7 +218,6 @@ class M3UProcessor:
             ]
             
             try:
-                # asyncio.create_subprocess_exec ব্যবহার করে নন-ব্লকিং সাবপ্রসেস রান করা
                 process = await asyncio.create_subprocess_exec(
                     *cmd,
                     stdout=asyncio.subprocess.PIPE,
@@ -240,28 +235,18 @@ class M3UProcessor:
                 except asyncio.TimeoutError:
                     process.kill()
                     
-            except Exception as e:
+            except Exception:
                 pass
 
             self.dead_count += 1
 
     def save_output(self):
-        """আউটপুট সেভ করা (ইনফো ডামি চ্যানেল সহ)"""
+        """আউটপুট সেভ করা (শুধুমাত্র রিয়েল চ্যানেল)"""
         logger.info("💾 Saving results to file...")
         with open(WORKING_FILE, "w", encoding="utf-8") as f:
             f.write("#EXTM3U\n")
             
-            info_logo = "https://i.ibb.co/VTRJ5vX/info.png"
-            group = "ℹ️ INFO & CREDITS"
-            online_count = len(self.working_channels)
-            
-            # ইনফো চ্যানেল তৈরি
-             f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🟢 Online Channels: {online_count}\nhttp://dummy.link/2\n')
-              f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 👑 Made By All in one reborn\nhttp://dummy.link/4\n')
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", ✈️ Telegram: https://t.me/allonebd\nhttp://dummy.link/5\n')
-            f.write(f'#EXTINF:-1 tvg-logo="{info_logo}" group-title="{group}", 🌐 Web: https://www.ratulxlive.duckdns.org/\nhttp://dummy.link/6\n')
-
-            # রিয়েল চ্যানেল সেভ
+            # শুধুমাত্র রিয়েল চ্যানেল সেভ করা হচ্ছে (কোনো ডামি টেক্সট নেই)
             for extinf, url in self.working_channels:
                 f.write(extinf + "\n" + url + "\n")
 
@@ -284,7 +269,6 @@ class M3UProcessor:
         # ২. চ্যানেল ভ্যালিডেশন পর্ব
         semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         
-        # aiohttp সেশনের কিছু লিমিট কাস্টমাইজ করা (TCP Connector)
         conn = aiohttp.TCPConnector(limit=CONCURRENCY_LIMIT, ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
             check_tasks = []
@@ -292,7 +276,6 @@ class M3UProcessor:
                 task = asyncio.create_task(self.check_channel(session, semaphore, url, extinf))
                 check_tasks.append(task)
             
-            # প্রগ্রেস ট্র্যাক করার জন্য tqdm এর বিকল্প হিসেবে লগিং
             chunk_size = 1000
             for i in range(0, len(check_tasks), chunk_size):
                 chunk = check_tasks[i:i + chunk_size]
@@ -305,10 +288,10 @@ class M3UProcessor:
 
 if __name__ == "__main__":
     # Windows এ ProactorEventLoop এরর ফিক্স
-    import sys
     if sys.platform == 'win32':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
         
     processor = M3UProcessor()
     asyncio.run(processor.run())
+
 

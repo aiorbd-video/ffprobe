@@ -46,29 +46,29 @@ logger = logging.getLogger(__name__)
 
 class M3UProcessor:
     def __init__(self):
-        # URL কে Key হিসেবে ধরে ডেটা স্টোর করা হবে, যাতে ডুপ্লিকেট বাদ পড়ে
-        self.unique_channels = {} 
+        # চ্যানেলের নাম অনুযায়ী লিংকগুলো গ্রুপ করা হবে
+        self.channels_grouped = {} 
         self.working_channels = []
         self.dead_count = 0
 
     def get_random_ua(self):
         return random.choice(USER_AGENTS)
 
+    def normalize_name(self, name):
+        """চ্যানেলের নাম ক্লিন করে স্ট্যান্ডার্ডাইজ করা (যেমন: SOMOY TV -> Somoy Tv)"""
+        name = name.strip()
+        name = re.sub(r'\s+', ' ', name) # ডাবল স্পেস রিমুভ
+        return name.title()
+
     def standardize_extinf(self, line):
-        """
-        ক্যাটাগরি (group-title) এবং চ্যানেলের নাম ক্লিন করার ফাংশন।
-        যাতে "news", "NEWS", "News Tv" সব একই ক্যাটাগরিতে পড়ে।
-        """
-        # চ্যানেলের নাম বের করা
+        """ক্যাটাগরি (group-title) এবং চ্যানেলের নাম ক্লিন করার ফাংশন"""
         parts = line.split(',', 1)
         channel_name = parts[1].strip() if len(parts) > 1 else "Unknown Channel"
         
-        # group-title বা ক্যাটাগরি বের করা
         group_match = re.search(r'group-title="([^"]+)"', line, re.IGNORECASE)
         
         if group_match:
             original_group = group_match.group(1)
-            # ক্লিন করা: স্পেস কমানো এবং Title Case করা (যেমন: news -> News)
             clean_group = original_group.strip().title()
             
             # কিছু কমন ক্যাটাগরি ফিক্স করা
@@ -80,7 +80,6 @@ class M3UProcessor:
             
             new_line = line.replace(f'group-title="{original_group}"', f'group-title="{clean_group}"')
         else:
-            # যদি ক্যাটাগরি না থাকে, তবে "Others" ক্যাটাগরিতে ফেলে দেওয়া হবে
             clean_group = "Others"
             if len(parts) == 2:
                 new_line = f'{parts[0]} group-title="{clean_group}",{parts[1]}'
@@ -107,7 +106,7 @@ class M3UProcessor:
             logger.error(f"❌ Error fetching {clean_url}: {str(e)}")
 
     def _parse_m3u_content(self, lines):
-        """M3U ডেটা থেকে ডুপ্লিকেট লিংক বাদ দিয়ে ক্লিন ডেটা রাখা"""
+        """M3U ডেটা থেকে চ্যানেলের নাম অনুযায়ী লিংক গ্রুপ করা"""
         i = 0
         while i < len(lines):
             line = lines[i].strip()
@@ -117,69 +116,71 @@ class M3UProcessor:
                     if url and not url.startswith("#") and url.startswith("http"):
                         
                         extinf_clean, group, name = self.standardize_extinf(line)
+                        norm_name = self.normalize_name(name) # ক্লিন করা নাম
+                        
                         channel_data = {
                             "extinf": extinf_clean,
                             "group": group,
-                            "name": name,
+                            "name": norm_name,
                             "url": url
                         }
                         
-                        # ডুপ্লিকেট URL চেক: যদি আগে থেকেই এই URL থাকে, তবে ভালো ক্যাটাগরি থাকলে আপডেট করবে
-                        if url not in self.unique_channels:
-                            self.unique_channels[url] = channel_data
-                        else:
-                            # যদি আগেরটার ক্যাটাগরি Others থাকে এবং নতুনটার স্পেসিফিক ক্যাটাগরি থাকে, তবে রিপ্লেস হবে
-                            if self.unique_channels[url]["group"] == "Others" and group != "Others":
-                                self.unique_channels[url] = channel_data
+                        if norm_name not in self.channels_grouped:
+                            self.channels_grouped[norm_name] = []
+                        
+                        # একই চ্যানেলের ভেতরে একই URL যেন দুইবার না ঢোকে
+                        if not any(x['url'] == url for x in self.channels_grouped[norm_name]):
+                            self.channels_grouped[norm_name].append(channel_data)
                 i += 2
             else:
                 i += 1
 
-    async def check_channel(self, session, semaphore, channel_data):
-        """চ্যানেল সচল আছে কি না তা যাচাই করা (HTTP + FFprobe)"""
-        url = channel_data["url"]
-        
+    async def process_channel_group(self, session, semaphore, channel_name, candidates):
+        """একটি চ্যানেলের সব লিংক চেক করা এবং সচল পাওয়া মাত্রই বাকিগুলো বাদ দেওয়া"""
         async with semaphore:
-            headers = {"User-Agent": self.get_random_ua()}
-            
-            # স্টেপ ১: ফাস্ট HTTP চেক
-            try:
-                async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
-                    if resp.status not in [200, 302, 301]:
-                        self.dead_count += 1
-                        return
-            except Exception:
-                pass
+            for data in candidates:
+                url = data["url"]
+                headers = {"User-Agent": self.get_random_ua()}
+                
+                # স্টেপ ১: ফাস্ট HTTP চেক
+                try:
+                    async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
+                        if resp.status not in [200, 301, 302]:
+                            continue # এই লিংক ডেড, পরের লিংকে যাও
+                except Exception:
+                    pass # হেড ফেইল হলেও FFprobe দিয়ে ট্রাই করব
 
-            # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক
-            cmd = [
-                "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
-                "-show_entries", "stream=codec_type",
-                "-of", "default=noprint_wrappers=1:nokey=1", url
-            ]
-            
-            try:
-                process = await asyncio.create_subprocess_exec(
-                    *cmd,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE
-                )
+                # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক
+                cmd = [
+                    "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
+                    "-show_entries", "stream=codec_type",
+                    "-of", "default=noprint_wrappers=1:nokey=1", url
+                ]
                 
                 try:
-                    stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=FFPROBE_TIMEOUT)
-                    output = stdout.decode('utf-8').strip()
-                    
-                    if process.returncode == 0 and ("video" in output or "audio" in output):
-                        self.working_channels.append(channel_data)
-                        logger.info(f"🟢 OK: [{channel_data['group']}] {channel_data['name']}")
-                        return
-                except asyncio.TimeoutError:
-                    process.kill()
-                    
-            except Exception:
-                pass
+                    process = await asyncio.create_subprocess_exec(
+                        *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+                    )
+                    try:
+                        stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=FFPROBE_TIMEOUT)
+                        output = stdout.decode('utf-8').strip()
+                        
+                        # যদি লিংক সচল হয়, তবে এটি লিস্টে অ্যাড করো এবং এই চ্যানেলের বাকি লিংকগুলো চেক করা বন্ধ করো
+                        if process.returncode == 0 and ("video" in output or "audio" in output):
+                            self.working_channels.append(data)
+                            logger.info(f"🟢 OK: [{data['group']}] {channel_name} (Selected 1 working link from {len(candidates)} links)")
+                            
+                            # বাকি যে কয়টা লিংক চেক করা হলো না, সেগুলোকে ডেড হিসেবে কাউন্ট করো
+                            self.dead_count += len(candidates) - 1
+                            return 
+                    except asyncio.TimeoutError:
+                        process.kill()
+                except Exception:
+                    pass
 
-            self.dead_count += 1
+            # যদি লুপ শেষ হয়ে যায় তার মানে কোনো লিংকই কাজ করেনি
+            self.dead_count += len(candidates)
+            logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {channel_name} (All {len(candidates)} links failed)")
 
     def save_output(self):
         """ফাইনাল রেজাল্ট সাজিয়ে (Sorting) সেভ করা"""
@@ -200,15 +201,15 @@ class M3UProcessor:
             logger.critical("❌ FFprobe not found in system PATH!")
             return
 
-        logger.info("🚀 Starting Pro M3U Checker...")
+        logger.info("🚀 Starting Pro M3U Checker with Smart De-Duplication...")
 
         # ১. প্লেলিস্ট ডাউনলোড পর্ব
         async with aiohttp.ClientSession() as session:
             download_tasks = [self.fetch_playlist(session, url) for url in M3U_SOURCES]
             await asyncio.gather(*download_tasks)
 
-        total_unique = len(self.unique_channels)
-        logger.info(f"✅ Found {total_unique} unique streams. Starting validation...")
+        total_unique_names = len(self.channels_grouped)
+        logger.info(f"✅ Found {total_unique_names} unique Channels. Starting validation...")
 
         # ২. চ্যানেল ভ্যালিডেশন পর্ব
         semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
@@ -216,19 +217,21 @@ class M3UProcessor:
         conn = aiohttp.TCPConnector(limit=CONCURRENCY_LIMIT, ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
             check_tasks = []
-            for url, data in self.unique_channels.items():
-                task = asyncio.create_task(self.check_channel(session, semaphore, data))
+            
+            # প্রত্যেকটি ইউনিক চ্যানেলের জন্য টাস্ক ক্রিয়েট করা হচ্ছে
+            for name, candidates in self.channels_grouped.items():
+                task = asyncio.create_task(self.process_channel_group(session, semaphore, name, candidates))
                 check_tasks.append(task)
             
             chunk_size = 1000
             for i in range(0, len(check_tasks), chunk_size):
                 chunk = check_tasks[i:i + chunk_size]
                 await asyncio.gather(*chunk)
-                logger.info(f"📊 Progress: Checked {min(i + chunk_size, total_unique)} / {total_unique}")
+                logger.info(f"📊 Progress: Checked {min(i + chunk_size, total_unique_names)} / {total_unique_names} Channels")
 
         # ৩. ফাইল সেভ পর্ব
         self.save_output()
-        logger.info(f"🎉 Done! Working: {len(self.working_channels)} | Dead: {self.dead_count}")
+        logger.info(f"🎉 Done! Working Channels: {len(self.working_channels)} | Dead/Discarded Links: {self.dead_count}")
 
 if __name__ == "__main__":
     # Windows এ ProactorEventLoop এরর ফিক্স
@@ -237,4 +240,3 @@ if __name__ == "__main__":
         
     processor = M3UProcessor()
     asyncio.run(processor.run())
-

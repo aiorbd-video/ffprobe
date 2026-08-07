@@ -77,7 +77,7 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/lucaswyte/iptv/ae8de55d61b66f29e0f2b0ea05fd0e926c0c4042/vizio.m3u8",
     "https://raw.githubusercontent.com/IPTVFlixBD/OopsTv/refs/heads/main/bd-test.m3u",
     "https://m3u-tvb.pages.dev/ayna+.m3u",
-    "https://raw.githubusercontent.com/amin8453/playlist/main/main.m3u",
+    
     "https://raw.githubusercontent.com/srhady/willow-event/refs/heads/main/primevideo_sports.m3u",
 
     # --- Invisible / Broken / Backend Links (JSON-এ visible:false ছিল) ---
@@ -116,7 +116,7 @@ M3U_SOURCES = [
     "https://tattistar.vercel.app/jhs.m3u",
     "https://m3u-tvb.pages.dev/BOSS-BDIX.m3u",
     "https://raw.githubusercontent.com/eishakilei-bd08/soha/refs/heads/main/t.m3u",
-    "https://raw.githubusercontent.com/iptv-org/iptv/refs/heads/master/streams/in_tango.m3u",
+    
     "https://m3u-tvb.pages.dev/XOTT_16032026_2107fk.m3u",
     "https://raw.githubusercontent.com/srhady/fifaplus/refs/heads/main/fifa_live.m3u",
     "https://ay2.playztv.workers.dev/?key=plz_lock_2026",

@@ -16,6 +16,9 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u", #Toffee
     "https://m3u-tvb.pages.dev/ayna+.m3u", #AynaOTT+
     "http://alixbd.com/5055.m3u" #SBOX APK PLAYLISTS 
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u", #Reborn Premium Movies
+    "https://raw.githubusercontent.com/aiorbd-video/BDIX-LIVE/refs/heads/main/main/allinone/log/a18plus.m3u", #Adult 18+ Reborn playlist
+    
 
 ]
 

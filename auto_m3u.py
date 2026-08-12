@@ -18,6 +18,9 @@ M3U_SOURCES = [
     "http://alixbd.com/2022.m3u", #SBOX APK PLAYLISTS 
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u", #Reborn Premium Movies
     "http://adultiptv.net/videos.m3u8", #Adult 18+ Reborn playlist
+    "https://m3u-tvb2.pages.dev/mr.m3u", #Marvel Movies
+    "https://m3u-tvb2.pages.dev/Mac-ASIA.m3u", #Asia TV
+    "https://m3u-tvb2.pages.dev/asiax.m3u", #Asia TV 2
     
 
 ]

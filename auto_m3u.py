@@ -9,7 +9,6 @@ from urllib.parse import urlparse
 import sys
 
 # --- কনফিগারেশন ---
-# টেস্ট করার জন্য দুটি নির্ভরযোগ্য M3U প্লেলিস্ট দেওয়া হলো
 M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",  #Verse Tv
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u", #critix tv
@@ -17,12 +16,9 @@ M3U_SOURCES = [
     "https://m3u-tvb.pages.dev/ayna+.m3u", #AynaOTT+
     "http://alixbd.com/2022.m3u", #SBOX APK PLAYLISTS 
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u", #Reborn Premium Movies
-    "http://adultiptv.net/chs.m3u", #Adult 18+ Reborn playlist
     "https://m3u-tvb2.pages.dev/mr.m3u", #Marvel Movies
     "https://m3u-tvb2.pages.dev/Mac-ASIA.m3u", #Asia TV
     "https://m3u-tvb2.pages.dev/asiax.m3u", #Asia TV 2
-    
-
 ]
 
 WORKING_FILE = "working.m3u"
@@ -74,18 +70,45 @@ class M3UProcessor:
         group_match = re.search(r'group-title="([^"]+)"', line, re.IGNORECASE)
         
         if group_match:
-            original_group = group_match.group(1)
-            clean_group = original_group.strip().title()
+            original_group = group_match.group(1).strip()
+            group_lower = original_group.lower()
             
-            # কিছু কমন ক্যাটাগরি ফিক্স করা
-            if "News" in clean_group: clean_group = "News"
-            elif "Sports" in clean_group: clean_group = "Sports"
-            elif "Movies" in clean_group: clean_group = "Movies"
-            elif "Kids" in clean_group: clean_group = "Kids"
-            elif "Music" in clean_group: clean_group = "Music"
+            # --- স্মার্ট ক্যাটাগরি ম্যাপিং ---
+            # বাংলাদেশ রিলেটেড যেকোনো নাম থাকলে "Bangladesh" করে দেবে
+            if any(x in group_lower for x in ["bangladesh", "bangladeshi", "bangla", "bd"]):
+                clean_group = "Bangladesh"
+            # ইন্ডিয়া রিলেটেড যেকোনো নাম থাকলে "India" করে দেবে
+            elif any(x in group_lower for x in ["india", "indian", "hindi", "in"]):
+                clean_group = "India"
+            # স্পোর্টস রিলেটেড
+            elif any(x in group_lower for x in ["sports", "sport", "cricket", "football", "khela"]):
+                clean_group = "Sports"
+            # নিউজ রিলেটেড
+            elif any(x in group_lower for x in ["news", "khobor", "newz"]):
+                clean_group = "News"
+            # মুভি রিলেটেড
+            elif any(x in group_lower for x in ["movies", "movie", "cinema", "film"]):
+                clean_group = "Movies"
+            # কিডস রিলেটেড
+            elif any(x in group_lower for x in ["kids", "cartoon", "children"]):
+                clean_group = "Kids"
+            # মিউজিক রিলেটেড
+            elif any(x in group_lower for x in ["music", "song", "gaan"]):
+                clean_group = "Music"
+            # এন্টারটেইনমেন্ট রিলেটেড
+            elif any(x in group_lower for x in ["entertainment", "natok", "drama"]):
+                clean_group = "Entertainment"
+            # রিলিজিয়ন রিলেটেড
+            elif any(x in group_lower for x in ["religious", "islamic", "quran", "islam"]):
+                clean_group = "Religious"
+            else:
+                # উপরের কোনোটিতে না পড়লে অরিজিনাল নামটাকেই Title Case করে সুন্দর করে দেবে
+                clean_group = original_group.title()
             
-            new_line = line.replace(f'group-title="{original_group}"', f'group-title="{clean_group}"')
+            # আগের এলোমেলো গ্রুপ নামটা সরিয়ে নতুন ফ্রেশ গ্রুপ নাম বসানো হচ্ছে
+            new_line = line.replace(f'group-title="{group_match.group(1)}"', f'group-title="{clean_group}"')
         else:
+            # যদি কোনো গ্রুপ নাম না থাকে
             clean_group = "Others"
             if len(parts) == 2:
                 new_line = f'{parts[0]} group-title="{clean_group}",{parts[1]}'
@@ -207,7 +230,7 @@ class M3UProcessor:
             logger.critical("❌ FFprobe not found in system PATH!")
             return
 
-        logger.info("🚀 Starting Pro M3U Checker with Smart De-Duplication...")
+        logger.info("🚀 Starting Pro M3U Checker with Smart De-Duplication & Category Standardizer...")
 
         # ১. প্লেলিস্ট ডাউনলোড পর্ব
         async with aiohttp.ClientSession() as session:
@@ -246,3 +269,5 @@ if __name__ == "__main__":
         
     processor = M3UProcessor()
     asyncio.run(processor.run())
+
+

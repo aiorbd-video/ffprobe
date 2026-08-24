@@ -12,19 +12,19 @@ import sys
 M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",  #Verse Tv
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u", #critix tv
-    "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u", #Toffee
+   # "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u", #Toffee
     "https://m3u-tvb.pages.dev/ayna+.m3u", #AynaOTT+
     "http://alixbd.com/2022.m3u", #SBOX APK PLAYLISTS 
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u", #Reborn Premium Movies
-    "https://m3u-tvb2.pages.dev/mr.m3u", #Marvel Movies
-    "https://m3u-tvb2.pages.dev/Mac-ASIA.m3u", #Asia TV
-    "https://m3u-tvb2.pages.dev/asiax.m3u", #Asia TV 2
+    #Marvel Movies
+ #   "https://m3u-tvb2.pages.dev/Mac-ASIA.m3u", #Asia TV
+    #"https://m3u-tvb2.pages.dev/asiax.m3u", #Asia TV 2
 ]
 
 WORKING_FILE = "working.m3u"
-CONCURRENCY_LIMIT = 100  # একসাথে ১০০টি রিকোয়েস্ট চেক করবে
-HTTP_TIMEOUT = 5         # প্রাথমিক HTTP চেকের জন্য টাইমআউট (সেকেন্ড)
-FFPROBE_TIMEOUT = 8      # FFprobe এর জন্য টাইমআউট (সেকেন্ড)
+CONCURRENCY_LIMIT = 50  # একসাথে ৫০টি রিকোয়েস্ট চেক করবে
+HTTP_TIMEOUT = 10         # প্রাথমিক HTTP চেকের জন্য টাইমআউট (সেকেন্ড)
+FFPROBE_TIMEOUT = 10      # FFprobe এর জন্য টাইমআউট (সেকেন্ড)
 
 # সার্ভার বাইপাস করার জন্য রেন্ডম ইউজার-এজেন্ট
 USER_AGENTS = [

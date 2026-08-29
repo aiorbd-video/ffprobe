@@ -10,23 +10,18 @@ import sys
 
 # --- কনফিগারেশন ---
 M3U_SOURCES = [
-    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",  #Verse Tv
-    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u", #critix tv
-   # "https://raw.githubusercontent.com/BINOD-XD/Toffee-Auto-Update-Playlist/refs/heads/main/toffee_OTT_Navigator.m3u", #Toffee
-    "https://m3u-tvb.pages.dev/ayna+.m3u", #AynaOTT+
-    "http://alixbd.com/2022.m3u", #SBOX APK PLAYLISTS 
-    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u", #Reborn Premium Movies
-    #Marvel Movies
- #   "https://m3u-tvb2.pages.dev/Mac-ASIA.m3u", #Asia TV
-    #"https://m3u-tvb2.pages.dev/asiax.m3u", #Asia TV 2
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u",
+    "https://m3u-tvb.pages.dev/ayna+.m3u",
+    "http://alixbd.com/2022.m3u",
+    "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u",
 ]
 
 WORKING_FILE = "working.m3u"
-CONCURRENCY_LIMIT = 50  # একসাথে ৫০টি রিকোয়েস্ট চেক করবে
-HTTP_TIMEOUT = 10         # প্রাথমিক HTTP চেকের জন্য টাইমআউট (সেকেন্ড)
-FFPROBE_TIMEOUT = 10      # FFprobe এর জন্য টাইমআউট (সেকেন্ড)
+CONCURRENCY_LIMIT = 50  
+HTTP_TIMEOUT = 10         
+FFPROBE_TIMEOUT = 10      
 
-# সার্ভার বাইপাস করার জন্য রেন্ডম ইউজার-এজেন্ট
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15",
@@ -35,7 +30,6 @@ USER_AGENTS = [
     "Kodi/19.5 (Windows NT 10.0; Win64; x64) App_Bitness/64 Version/19.5-Matrix"
 ]
 
-# --- লগিং সেটআপ ---
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -48,7 +42,6 @@ logger = logging.getLogger(__name__)
 
 class M3UProcessor:
     def __init__(self):
-        # চ্যানেলের নাম অনুযায়ী লিংকগুলো গ্রুপ করা হবে
         self.channels_grouped = {} 
         self.working_channels = []
         self.dead_count = 0
@@ -57,68 +50,102 @@ class M3UProcessor:
         return random.choice(USER_AGENTS)
 
     def normalize_name(self, name):
-        """চ্যানেলের নাম ক্লিন করে স্ট্যান্ডার্ডাইজ করা (যেমন: SOMOY TV -> Somoy Tv)"""
         name = name.strip()
-        name = re.sub(r'\s+', ' ', name) # ডাবল স্পেস রিমুভ
+        name = re.sub(r'\s+', ' ', name)
         return name.title()
 
-    def standardize_extinf(self, line):
-        """ক্যাটাগরি (group-title) এবং চ্যানেলের নাম ক্লিন করার ফাংশন"""
+    def standardize_data(self, line, url):
+        """ক্যাটাগরি, ভিওডি এবং দেশের নাম ফিক্স করার স্মার্ট ইঞ্জিন"""
         parts = line.split(',', 1)
         channel_name = parts[1].strip() if len(parts) > 1 else "Unknown Channel"
+        channel_name_lower = channel_name.lower()
         
         group_match = re.search(r'group-title="([^"]+)"', line, re.IGNORECASE)
+        original_group = group_match.group(1).strip() if group_match else "Others"
+        group_lower = original_group.lower()
         
-        if group_match:
-            original_group = group_match.group(1).strip()
-            group_lower = original_group.lower()
+        clean_group = original_group.title()
+
+        # URL অ্যানালাইসিস
+        url_lower = url.lower()
+        parsed_url = urlparse(url_lower)
+        url_path = parsed_url.path
+        url_host = parsed_url.hostname or ""
+
+        # -------------------------------------------------------------
+        # ১. VOD (Video On Demand) চেকার (আপডেটেড)
+        # -------------------------------------------------------------
+        vod_extensions = ('.mp4', '.mkv', '.avi', '.mov', '.wmv', '.webm', '.flv')
+        
+        # চেক: এক্সটেনশন, অথবা লিংকের শুরুতে/মাঝে vod, vods, movie, series ইত্যাদি আছে কি না
+        is_vod_link = (
+            url_path.endswith(vod_extensions) or 
+            "://vod" in url_lower or 
+            "vod." in url_host or 
+            "vods." in url_host or
+            "/vod/" in url_path or 
+            "/vods/" in url_path or
+            "/movie/" in url_path or
+            "/series/" in url_path
+        )
+        
+        is_vod_group = "vod" in group_lower or ("movie" in group_lower and not url_path.endswith('.m3u8'))
+
+        if is_vod_link or is_vod_group:
+            clean_group = "VOD / Movies"
             
-            # --- স্মার্ট ক্যাটাগরি ম্যাপিং ---
-            # বাংলাদেশ রিলেটেড যেকোনো নাম থাকলে "Bangladesh" করে দেবে
+        # -------------------------------------------------------------
+        # ২. Force Bangladeshi Channels 
+        # -------------------------------------------------------------
+        elif any(x in channel_name_lower for x in [
+            "somoy", "jamuna", "ekattor", "ntv", "atn", "gtv", "gazi tv", 
+            "nagorik", "boishakhi", "channel i", "dbc", "independent", 
+            "rtv", "btv", "banglavision", "deepto", "dipto", "maasranga", 
+            "mohona", "my tv", "desh tv", "asian tv", "ekushey", "t sports", "toffee"
+        ]):
+            clean_group = "Bangladesh"
+
+        # -------------------------------------------------------------
+        # ৩. Force Indian Channels 
+        # -------------------------------------------------------------
+        elif any(x in channel_name_lower for x in [
+            "star ", "zee ", "colors", "sony ", "sun ", "asianet", 
+            "abp ", "ndtv", "republic", "aaj tak", "sports18", "jio ", "jalsha"
+        ]):
+            clean_group = "India"
+
+        # -------------------------------------------------------------
+        # ৪. সাধারণ ক্যাটাগরি ফিক্সিং
+        # -------------------------------------------------------------
+        else:
             if any(x in group_lower for x in ["bangladesh", "bangladeshi", "bangla", "bd"]):
                 clean_group = "Bangladesh"
-            # ইন্ডিয়া রিলেটেড যেকোনো নাম থাকলে "India" করে দেবে
             elif any(x in group_lower for x in ["india", "indian", "hindi", "in"]):
                 clean_group = "India"
-            # স্পোর্টস রিলেটেড
             elif any(x in group_lower for x in ["sports", "sport", "cricket", "football", "khela"]):
                 clean_group = "Sports"
-            # নিউজ রিলেটেড
             elif any(x in group_lower for x in ["news", "khobor", "newz"]):
                 clean_group = "News"
-            # মুভি রিলেটেড
-            elif any(x in group_lower for x in ["movies", "movie", "cinema", "film"]):
-                clean_group = "Movies"
-            # কিডস রিলেটেড
             elif any(x in group_lower for x in ["kids", "cartoon", "children"]):
                 clean_group = "Kids"
-            # মিউজিক রিলেটেড
             elif any(x in group_lower for x in ["music", "song", "gaan"]):
                 clean_group = "Music"
-            # এন্টারটেইনমেন্ট রিলেটেড
-            elif any(x in group_lower for x in ["entertainment", "natok", "drama"]):
-                clean_group = "Entertainment"
-            # রিলিজিয়ন রিলেটেড
             elif any(x in group_lower for x in ["religious", "islamic", "quran", "islam"]):
                 clean_group = "Religious"
+            elif original_group == "Others":
+                clean_group = "Others"
             else:
-                # উপরের কোনোটিতে না পড়লে অরিজিনাল নামটাকেই Title Case করে সুন্দর করে দেবে
                 clean_group = original_group.title()
-            
-            # আগের এলোমেলো গ্রুপ নামটা সরিয়ে নতুন ফ্রেশ গ্রুপ নাম বসানো হচ্ছে
-            new_line = line.replace(f'group-title="{group_match.group(1)}"', f'group-title="{clean_group}"')
+        
+        # নতুন গ্রুপ নাম দিয়ে লাইনটি আপডেট করা
+        if group_match:
+            new_line = line.replace(f'group-title="{original_group}"', f'group-title="{clean_group}"')
         else:
-            # যদি কোনো গ্রুপ নাম না থাকে
-            clean_group = "Others"
-            if len(parts) == 2:
-                new_line = f'{parts[0]} group-title="{clean_group}",{parts[1]}'
-            else:
-                new_line = line
+            new_line = f'{parts[0]} group-title="{clean_group}",{parts[1]}'
 
         return new_line, clean_group, channel_name
 
     async def fetch_playlist(self, session, url):
-        """প্লেলিস্ট ডাউনলোড এবং ডেটা পার্স করা"""
         clean_url = url.split('|')[0]
         headers = {"User-Agent": self.get_random_ua()}
         
@@ -135,7 +162,6 @@ class M3UProcessor:
             logger.error(f"❌ Error fetching {clean_url}: {str(e)}")
 
     def _parse_m3u_content(self, lines):
-        """M3U ডেটা থেকে চ্যানেলের নাম অনুযায়ী লিংক গ্রুপ করা"""
         i = 0
         while i < len(lines):
             line = lines[i].strip()
@@ -144,8 +170,8 @@ class M3UProcessor:
                     url = lines[i + 1].strip()
                     if url and not url.startswith("#") and url.startswith("http"):
                         
-                        extinf_clean, group, name = self.standardize_extinf(line)
-                        norm_name = self.normalize_name(name) # ক্লিন করা নাম
+                        extinf_clean, group, name = self.standardize_data(line, url)
+                        norm_name = self.normalize_name(name)
                         
                         channel_data = {
                             "extinf": extinf_clean,
@@ -157,7 +183,6 @@ class M3UProcessor:
                         if norm_name not in self.channels_grouped:
                             self.channels_grouped[norm_name] = []
                         
-                        # একই চ্যানেলের ভেতরে একই URL যেন দুইবার না ঢোকে
                         if not any(x['url'] == url for x in self.channels_grouped[norm_name]):
                             self.channels_grouped[norm_name].append(channel_data)
                 i += 2
@@ -165,21 +190,18 @@ class M3UProcessor:
                 i += 1
 
     async def process_channel_group(self, session, semaphore, channel_name, candidates):
-        """একটি চ্যানেলের সব লিংক চেক করা এবং সচল পাওয়া মাত্রই বাকিগুলো বাদ দেওয়া"""
         async with semaphore:
             for data in candidates:
                 url = data["url"]
                 headers = {"User-Agent": self.get_random_ua()}
                 
-                # স্টেপ ১: ফাস্ট HTTP চেক
                 try:
                     async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
                         if resp.status not in [200, 301, 302]:
-                            continue # এই লিংক ডেড, পরের লিংকে যাও
+                            continue 
                 except Exception:
-                    pass # হেড ফেইল হলেও FFprobe দিয়ে ট্রাই করব
+                    pass 
 
-                # স্টেপ ২: FFprobe দিয়ে স্ট্রিম চেক
                 cmd = [
                     "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
                     "-show_entries", "stream=codec_type",
@@ -194,12 +216,9 @@ class M3UProcessor:
                         stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=FFPROBE_TIMEOUT)
                         output = stdout.decode('utf-8').strip()
                         
-                        # যদি লিংক সচল হয়, তবে এটি লিস্টে অ্যাড করো এবং এই চ্যানেলের বাকি লিংকগুলো চেক করা বন্ধ করো
                         if process.returncode == 0 and ("video" in output or "audio" in output):
                             self.working_channels.append(data)
-                            logger.info(f"🟢 OK: [{data['group']}] {channel_name} (Selected 1 working link from {len(candidates)} links)")
-                            
-                            # বাকি যে কয়টা লিংক চেক করা হলো না, সেগুলোকে ডেড হিসেবে কাউন্ট করো
+                            logger.info(f"🟢 OK: [{data['group']}] {channel_name} (Selected 1 link)")
                             self.dead_count += len(candidates) - 1
                             return 
                     except asyncio.TimeoutError:
@@ -207,20 +226,15 @@ class M3UProcessor:
                 except Exception:
                     pass
 
-            # যদি লুপ শেষ হয়ে যায় তার মানে কোনো লিংকই কাজ করেনি
             self.dead_count += len(candidates)
-            logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {channel_name} (All {len(candidates)} links failed)")
+            logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {channel_name} (All links failed)")
 
     def save_output(self):
-        """ফাইনাল রেজাল্ট সাজিয়ে (Sorting) সেভ করা"""
         logger.info("💾 Sorting and saving results to file...")
-        
-        # ক্যাটাগরি (group) এবং চ্যানেলের নাম (name) অনুযায়ী A-Z সাজানো হচ্ছে
         sorted_channels = sorted(self.working_channels, key=lambda x: (x["group"], x["name"]))
         
         with open(WORKING_FILE, "w", encoding="utf-8") as f:
             f.write("#EXTM3U\n")
-            
             for ch in sorted_channels:
                 f.write(ch["extinf"] + "\n")
                 f.write(ch["url"] + "\n")
@@ -230,9 +244,8 @@ class M3UProcessor:
             logger.critical("❌ FFprobe not found in system PATH!")
             return
 
-        logger.info("🚀 Starting Pro M3U Checker with Smart De-Duplication & Category Standardizer...")
+        logger.info("🚀 Starting Pro M3U Checker with Ultimate VOD Separation & BD Channel Fix...")
 
-        # ১. প্লেলিস্ট ডাউনলোড পর্ব
         async with aiohttp.ClientSession() as session:
             download_tasks = [self.fetch_playlist(session, url) for url in M3U_SOURCES]
             await asyncio.gather(*download_tasks)
@@ -240,14 +253,12 @@ class M3UProcessor:
         total_unique_names = len(self.channels_grouped)
         logger.info(f"✅ Found {total_unique_names} unique Channels. Starting validation...")
 
-        # ২. চ্যানেল ভ্যালিডেশন পর্ব
         semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         
         conn = aiohttp.TCPConnector(limit=CONCURRENCY_LIMIT, ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
             check_tasks = []
             
-            # প্রত্যেকটি ইউনিক চ্যানেলের জন্য টাস্ক ক্রিয়েট করা হচ্ছে
             for name, candidates in self.channels_grouped.items():
                 task = asyncio.create_task(self.process_channel_group(session, semaphore, name, candidates))
                 check_tasks.append(task)
@@ -258,16 +269,13 @@ class M3UProcessor:
                 await asyncio.gather(*chunk)
                 logger.info(f"📊 Progress: Checked {min(i + chunk_size, total_unique_names)} / {total_unique_names} Channels")
 
-        # ৩. ফাইল সেভ পর্ব
         self.save_output()
         logger.info(f"🎉 Done! Working Channels: {len(self.working_channels)} | Dead/Discarded Links: {self.dead_count}")
 
 if __name__ == "__main__":
-    # Windows এ ProactorEventLoop এরর ফিক্স
     if sys.platform == 'win32':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
         
     processor = M3UProcessor()
     asyncio.run(processor.run())
-
 

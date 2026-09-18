@@ -14,6 +14,7 @@ M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u",
     "https://m3u-tvb.pages.dev/ayna+.m3u",
     "http://alixbd.com/2022.m3u",
+    "https://raw.githubusercontent.com/aiorbd-video/ffprobe/refs/heads/main/skym3u/russia.m3u",
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u",
 ]
 

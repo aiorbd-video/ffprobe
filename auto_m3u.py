@@ -5,11 +5,16 @@ import shutil
 import logging
 import random
 import re
-from urllib.parse import urlparse
+import os
 import sys
+import requests
+from urllib.parse import urlparse
 
 # --- কনফিগারেশন ---
-M3U_SOURCES = [
+GIST_SOURCES_URL = os.environ.get("GIST_SOURCES_URL")
+
+# ডিফল্ট ফলব্যাক লিংক (যদি Gist থেকে না পাওয়া যায়)
+DEFAULT_M3U_SOURCES = [
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u",
     "https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u",
     "https://m3u-tvb.pages.dev/ayna+.m3u",
@@ -42,8 +47,34 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def load_sources_from_gist():
+    """Gist Secret URL থেকে সমস্ত প্রাইভেট লিংক স্বয়ংক্রিয়ভাবে লোড করে"""
+    if not GIST_SOURCES_URL:
+        logger.info("ℹ️ No GIST_SOURCES_URL secret found. Using default public sources.")
+        return DEFAULT_M3U_SOURCES
+
+    logger.info("🔐 Fetching secret playlist sources from GitHub Secret Gist...")
+    try:
+        headers = {"User-Agent": random.choice(USER_AGENTS)}
+        resp = requests.get(GIST_SOURCES_URL.strip(), headers=headers, timeout=15)
+        if resp.status_code == 200:
+            lines = resp.text.splitlines()
+            sources = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
+            if sources:
+                logger.info(f"✅ Loaded {len(sources)} secret M3U source URLs from Gist!")
+                return sources
+            else:
+                logger.warning("⚠️ Gist was reachable but empty. Using fallback sources.")
+        else:
+            logger.error(f"❌ Failed to read Gist. HTTP Status: {resp.status_code}")
+    except Exception as e:
+        logger.error(f"❌ Error fetching from Gist: {str(e)}")
+
+    return DEFAULT_M3U_SOURCES
+
 class M3UProcessor:
-    def __init__(self):
+    def __init__(self, sources):
+        self.sources = sources
         self.channels_grouped = {} 
         self.working_channels = []
         self.dead_count = 0
@@ -74,12 +105,8 @@ class M3UProcessor:
         url_path = parsed_url.path
         url_host = parsed_url.hostname or ""
 
-        # -------------------------------------------------------------
-        # ১. VOD (Video On Demand) চেকার (আপডেটেড)
-        # -------------------------------------------------------------
+        # ১. VOD (Video On Demand) চেকার
         vod_extensions = ('.mp4', '.mkv', '.avi', '.mov', '.wmv', '.webm', '.flv')
-        
-        # চেক: এক্সটেনশন, অথবা লিংকের শুরুতে/মাঝে vod, vods, movie, series ইত্যাদি আছে কি না
         is_vod_link = (
             url_path.endswith(vod_extensions) or 
             "://vod" in url_lower or 
@@ -90,15 +117,12 @@ class M3UProcessor:
             "/movie/" in url_path or
             "/series/" in url_path
         )
-        
         is_vod_group = "vod" in group_lower or ("movie" in group_lower and not url_path.endswith('.m3u8'))
 
         if is_vod_link or is_vod_group:
             clean_group = "VOD / Movies"
             
-        # -------------------------------------------------------------
         # ২. Force Bangladeshi Channels 
-        # -------------------------------------------------------------
         elif any(x in channel_name_lower for x in [
             "somoy", "jamuna", "ekattor", "ntv", "atn", "gtv", "gazi tv", 
             "nagorik", "boishakhi", "channel i", "dbc", "independent", 
@@ -107,18 +131,14 @@ class M3UProcessor:
         ]):
             clean_group = "Bangladesh"
 
-        # -------------------------------------------------------------
         # ৩. Force Indian Channels 
-        # -------------------------------------------------------------
         elif any(x in channel_name_lower for x in [
             "star ", "zee ", "colors", "sony ", "sun ", "asianet", 
             "abp ", "ndtv", "republic", "aaj tak", "sports18", "jio ", "jalsha"
         ]):
             clean_group = "India"
 
-        # -------------------------------------------------------------
         # ৪. সাধারণ ক্যাটাগরি ফিক্সিং
-        # -------------------------------------------------------------
         else:
             if any(x in group_lower for x in ["bangladesh", "bangladeshi", "bangla", "bd"]):
                 clean_group = "Bangladesh"
@@ -157,11 +177,11 @@ class M3UProcessor:
                     text = await response.text()
                     lines = text.splitlines()
                     self._parse_m3u_content(lines)
-                    logger.info(f"✅ Loaded: {clean_url}")
+                    logger.info(f"✅ Loaded M3U Feed: {clean_url[:45]}...")
                 else:
-                    logger.warning(f"⚠️ Failed ({response.status}): {clean_url}")
+                    logger.warning(f"⚠️ Failed ({response.status}): {clean_url[:45]}...")
         except Exception as e:
-            logger.error(f"❌ Error fetching {clean_url}: {str(e)}")
+            logger.error(f"❌ Error fetching {clean_url[:45]}...: {str(e)}")
 
     def _parse_m3u_content(self, lines):
         i = 0
@@ -171,7 +191,6 @@ class M3UProcessor:
                 if i + 1 < len(lines):
                     url = lines[i + 1].strip()
                     if url and not url.startswith("#") and url.startswith("http"):
-                        
                         extinf_clean, group, name = self.standardize_data(line, url)
                         norm_name = self.normalize_name(name)
                         
@@ -199,7 +218,7 @@ class M3UProcessor:
                 
                 try:
                     async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
-                        if resp.status not in [200, 301, 302]:
+                        if resp.status not in [200, 206, 301, 302]:
                             continue 
                 except Exception:
                     pass 
@@ -220,7 +239,7 @@ class M3UProcessor:
                         
                         if process.returncode == 0 and ("video" in output or "audio" in output):
                             self.working_channels.append(data)
-                            logger.info(f"🟢 OK: [{data['group']}] {channel_name} (Selected 1 link)")
+                            logger.info(f"🟢 OK: [{data['group']}] {channel_name} (Verified stream)")
                             self.dead_count += len(candidates) - 1
                             return 
                     except asyncio.TimeoutError:
@@ -232,7 +251,7 @@ class M3UProcessor:
             logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {channel_name} (All links failed)")
 
     def save_output(self):
-        logger.info("💾 Sorting and saving results to file...")
+        logger.info("💾 Sorting and saving results to working.m3u...")
         sorted_channels = sorted(self.working_channels, key=lambda x: (x["group"], x["name"]))
         
         with open(WORKING_FILE, "w", encoding="utf-8") as f:
@@ -249,7 +268,7 @@ class M3UProcessor:
         logger.info("🚀 Starting Pro M3U Checker with Ultimate VOD Separation & BD Channel Fix...")
 
         async with aiohttp.ClientSession() as session:
-            download_tasks = [self.fetch_playlist(session, url) for url in M3U_SOURCES]
+            download_tasks = [self.fetch_playlist(session, url) for url in self.sources]
             await asyncio.gather(*download_tasks)
 
         total_unique_names = len(self.channels_grouped)
@@ -277,7 +296,8 @@ class M3UProcessor:
 if __name__ == "__main__":
     if sys.platform == 'win32':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-        
-    processor = M3UProcessor()
+    
+    # Gist থেকে সিক্রেট লিংক ফেচ করা
+    active_sources = load_sources_from_gist()
+    processor = M3UProcessor(active_sources)
     asyncio.run(processor.run())
-

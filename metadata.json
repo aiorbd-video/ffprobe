@@ -1,0 +1,8 @@
+{
+  "name": "M3U Dead Link Remover & IPTV Stream Health Checker",
+  "description": "Enterprise M3U Playlist Manager, Dead Link Remover, Stream Health Checker, and IPTV Player with smart VOD categorization and auto-deduplication.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

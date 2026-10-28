@@ -2,8 +2,8 @@ name: 🚀 Auto Update M3U Playlist
 
 on:
   schedule:
-    # প্রতিদিন বাংলাদেশ সময় সকাল ৬টা ও সন্ধ্যা ৬টায় (UTC 00:00 এবং 12:00)
-    - cron: '0 0,12 * * *'
+    # প্রতি ২৪ ঘণ্টায় একবার রান করবে (প্রতিদিন বাংলাদেশ সময় সকাল ৬:০০টায় / UTC 00:00)
+    - cron: '0 0 * * *'
   workflow_dispatch: # গিটহাব থেকে ম্যানুয়ালি রান করার বাটন
 
 concurrency:
@@ -18,6 +18,7 @@ jobs:
 
     permissions:
       contents: write
+      actions: write # প্রিভিউস অ্যাকশন রান ডিলেট করার জন্য পারমিশন
 
     steps:
       - name: 📥 Checkout Repository
@@ -51,7 +52,8 @@ jobs:
           echo "### 📺 M3U Health Check Summary" >> $GITHUB_STEP_SUMMARY
           if [ -f "working.m3u" ]; then
             TOTAL_CHANNELS=$(grep -c "^#EXTINF" working.m3u || echo 0)
-            echo "- **Verified Active Channels:** $TOTAL_CHANNELS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Verified Active Channels (Single Link Each):** $TOTAL_CHANNELS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Schedule:** Runs every 24 hours ⏱️" >> $GITHUB_STEP_SUMMARY
             echo "- **Status:** Completed successfully ✅" >> $GITHUB_STEP_SUMMARY
             echo "- **Last Updated:** $(date -u)" >> $GITHUB_STEP_SUMMARY
           fi
@@ -70,3 +72,23 @@ jobs:
           else
             echo "No changes in working.m3u. Skipping git commit."
           fi
+
+      - name: 🧹 Delete Previous Workflow Runs
+        if: success() # বর্তমান রান সাকসেসফুল হলেই কেবল পুরানোগুলো ডিলিট করবে
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Current Run ID: ${{ github.run_id }}"
+          echo "Searching for completed previous runs to delete..."
+          
+          # পূর্বের ফিনিশড রান আইডিগুলো বের করা
+          PREVIOUS_RUNS=$(gh run list --workflow=update_m3u.yml --status=completed --json databaseId --jq '.[].databaseId' || echo "")
+          
+          for RUN_ID in $PREVIOUS_RUNS; do
+            if [ "$RUN_ID" != "${{ github.run_id }}" ]; then
+              echo "🗑️ Deleting previous run ID: $RUN_ID"
+              gh run delete "$RUN_ID" || true
+            fi
+          done
+          
+          echo "✅ All older workflow runs have been successfully cleaned up!"

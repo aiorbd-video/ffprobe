@@ -49,34 +49,9 @@ export const SourcesModal: React.FC<SourcesModalProps> = ({
 
   const remotePresets = [
     {
-      name: '🔒 My Secret Gist (Sources List)',
+      name: '🔒 My Secret Gist (Dedicated Sources)',
       url: 'https://gist.githubusercontent.com/aiorbd-video/bdb6776cca1ec404c46160dbf8cbee1e/raw',
       category: 'Secret Gist (Private)'
-    },
-    {
-      name: 'Verse Media M3U',
-      url: 'https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/verse.m3u',
-      category: 'General / Entertainment'
-    },
-    {
-      name: 'Criticx M3U',
-      url: 'https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/criticx.m3u',
-      category: 'Live TV / News'
-    },
-    {
-      name: 'Ayna+ Live Channels',
-      url: 'https://m3u-tvb.pages.dev/ayna+.m3u',
-      category: 'Bangla / Hindi'
-    },
-    {
-      name: 'Marvel Studio Movies (VOD)',
-      url: 'https://raw.githubusercontent.com/aiorbd-video/livxow/refs/heads/main/database/media/rebornmovies/english/marvelstudio/movies.m3u',
-      category: 'VOD / Movies'
-    },
-    {
-      name: 'AlixBD 2022 Playlist',
-      url: 'http://alixbd.com/2022.m3u',
-      category: 'Bangladesh'
     }
   ];
 

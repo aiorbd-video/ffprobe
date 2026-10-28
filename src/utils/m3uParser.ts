@@ -1,11 +1,11 @@
 import { ChannelItem, StreamCandidate } from '../types';
 
 export const USER_AGENTS = [
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
-  'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0',
-  'VLC/3.0.18 LibVLC/3.0.18',
-  'Kodi/19.5 (Windows NT 10.0; Win64; x64) App_Bitness/64 Version/19.5-Matrix'
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15',
+  'Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0',
+  'VLC/3.0.20 LibVLC/3.0.20',
+  'Kodi/20.3 (Windows NT 10.0; Win64; x64) App_Bitness/64 Version/20.3-Nexus'
 ];
 
 export function getRandomUA(): string {
@@ -20,22 +20,55 @@ export function toTitleCase(str: string): string {
     .join(' ');
 }
 
-export function normalizeName(name: string): string {
-  const cleaned = name.trim().replace(/\s+/g, ' ');
-  return toTitleCase(cleaned);
+export function cleanCanonicalName(rawName: string): string {
+  let name = rawName.trim();
+
+  // Strip url-like junk
+  if (name.startsWith('#http') || name.startsWith('http')) {
+    const parts = name.split('/');
+    name = parts[parts.length - 1].replace('.m3u8', '').replace(/-/g, ' ');
+  }
+
+  // Strip leading digits or prefixes like 8NTV -> NTV, BD: -> ''
+  name = name.replace(/^\d+([A-Za-z])/, '$1');
+  name = name.replace(/^(BD|IN|UK|US|HINDI|BANGLA)[\s:\-_|]+/i, '');
+
+  // Strip noise patterns
+  const noisePatterns = [
+    /\[backup\s*\d*\]/gi, /\(backup\s*\d*\)/gi, /\bbackup\s*\d*\b/gi,
+    /\[\s*\d+p\s*\]/gi, /\(\s*\d+p\s*\)/gi, /\b\d{3,4}p\b/gi,
+    /\[\s*fhd\s*\]/gi, /\(fhd\)/gi, /\bfhd\b/gi,
+    /\[\s*uhd\s*\]/gi, /\(uhd\)/gi, /\buhd\b/gi,
+    /\[\s*4k\s*\]/gi, /\(4k\)/gi, /\b4k\b/gi,
+    /\[\s*hd\s*\]/gi, /\(hd\)/gi, /\bhd\b/gi,
+    /\[\s*sd\s*\]/gi, /\(sd\)/gi, /\bsd\b/gi,
+    /\[\s*hevc\s*\]/gi, /\(hevc\)/gi, /\bhevc\b/gi,
+    /\(org\)/gi, /\[org\]/gi, /\(low\)/gi, /\(high\)/gi,
+    /\|\s*vip\s*\|/gi, /\|\s*premium\s*\|/gi, /-\s*live\s*/gi,
+    /server\s*\d+/gi, /stream\s*\d+/gi
+  ];
+
+  for (const pattern of noisePatterns) {
+    name = name.replace(pattern, '');
+  }
+
+  name = name.replace(/[\s\-_|]+/g, ' ').trim();
+  return name ? toTitleCase(name) : 'Unknown Channel';
 }
 
 export function standardizeData(line: string, url: string): {
   extinfClean: string;
   group: string;
   channelName: string;
+  canonicalName: string;
   logo?: string;
   tvgId?: string;
 } {
   const commaIdx = line.indexOf(',');
   const headerPart = commaIdx !== -1 ? line.slice(0, commaIdx) : line;
-  const channelName = commaIdx !== -1 ? line.slice(commaIdx + 1).trim() : 'Unknown Channel';
-  const channelNameLower = channelName.toLowerCase();
+  const rawChannelName = commaIdx !== -1 ? line.slice(commaIdx + 1).trim() : 'Unknown Channel';
+  const canonicalName = cleanCanonicalName(rawChannelName);
+  const channelNameLower = canonicalName.toLowerCase();
 
   const groupMatch = line.match(/group-title="([^"]+)"/i);
   const originalGroup = groupMatch ? groupMatch[1].trim() : 'Others';
@@ -87,7 +120,7 @@ export function standardizeData(line: string, url: string): {
   else if (
     [
       'star ', 'zee ', 'colors', 'sony ', 'sun ', 'asianet',
-      'abp ', 'ndtv', 'republic', 'aaj tak', 'sports18', 'jio ', 'jalsha'
+      'abp ', 'ndtv', 'republic', 'aaj tak', 'sports18', 'jio ', 'jalsha', 'dd sports'
     ].some(x => channelNameLower.includes(x))
   ) {
     cleanGroup = 'India';
@@ -115,13 +148,15 @@ export function standardizeData(line: string, url: string): {
     }
   }
 
-  // Update or insert group-title
-  let extinfClean = line;
+  // Update group-title and canonicalize channel name in header
+  let updatedHeader = headerPart;
   if (groupMatch) {
-    extinfClean = line.replace(`group-title="${originalGroup}"`, `group-title="${cleanGroup}"`);
+    updatedHeader = headerPart.replace(`group-title="${originalGroup}"`, `group-title="${cleanGroup}"`);
   } else {
-    extinfClean = `${headerPart} group-title="${cleanGroup}",${channelName}`;
+    updatedHeader = `${headerPart} group-title="${cleanGroup}"`;
   }
+
+  const extinfClean = `${updatedHeader},${canonicalName}`;
 
   // Extract logo
   const logoMatch = line.match(/tvg-logo="([^"]+)"/i);
@@ -134,7 +169,8 @@ export function standardizeData(line: string, url: string): {
   return {
     extinfClean,
     group: cleanGroup,
-    channelName,
+    channelName: rawChannelName,
+    canonicalName,
     logo,
     tvgId
   };
@@ -143,39 +179,45 @@ export function standardizeData(line: string, url: string): {
 export function parseM3U(content: string): ChannelItem[] {
   const lines = content.split(/\r?\n/);
   const channelsMap: Map<string, ChannelItem> = new Map();
+  const globalSeenUrls = new Set<string>();
 
   let i = 0;
   while (i < lines.length) {
     const line = lines[i].trim();
     if (line.startsWith('#EXTINF')) {
       if (i + 1 < lines.length) {
-        const streamUrl = lines[i + 1].trim();
-        if (streamUrl && !streamUrl.startsWith('#') && streamUrl.startsWith('http')) {
-          const { extinfClean, group, channelName, logo, tvgId } = standardizeData(line, streamUrl);
-          const normName = normalizeName(channelName);
+        const rawUrl = lines[i + 1].trim();
+        if (rawUrl && !rawUrl.startsWith('#') && rawUrl.startsWith('http')) {
+          const cleanStreamUrl = rawUrl.split('|')[0].trim();
+
+          // Strict Cross-Channel Global URL Deduplication
+          if (globalSeenUrls.has(cleanStreamUrl)) {
+            i += 2;
+            continue;
+          }
+          globalSeenUrls.add(cleanStreamUrl);
+
+          const { extinfClean, group, canonicalName, logo, tvgId } = standardizeData(line, rawUrl);
 
           const candidate: StreamCandidate = {
             id: `cand-${Math.random().toString(36).slice(2, 9)}`,
-            url: streamUrl,
+            url: rawUrl,
             status: 'untested'
           };
 
-          const existing = channelsMap.get(normName);
+          const existing = channelsMap.get(canonicalName);
           if (existing) {
-            // Avoid duplicate identical URL in same channel
-            if (!existing.candidates.some(c => c.url === streamUrl)) {
-              existing.candidates.push(candidate);
-            }
+            existing.candidates.push(candidate);
             if (!existing.logo && logo) {
               existing.logo = logo;
             }
           } else {
-            channelsMap.set(normName, {
+            channelsMap.set(canonicalName, {
               id: `ch-${Math.random().toString(36).slice(2, 9)}`,
               extinf: extinfClean,
               rawExtinf: line,
-              name: channelName,
-              normalizedName: normName,
+              name: canonicalName,
+              normalizedName: canonicalName,
               group,
               logo,
               tvgId,
@@ -195,7 +237,7 @@ export function parseM3U(content: string): ChannelItem[] {
 }
 
 export function serializeM3U(channels: ChannelItem[], options?: { onlyActive?: boolean }): string {
-  // Sort by group, then by name (matching auto_m3u.py line 236)
+  // Sort by group, then by canonical name
   const sorted = [...channels].sort((a, b) => {
     if (a.group !== b.group) {
       return a.group.localeCompare(b.group);
@@ -203,24 +245,28 @@ export function serializeM3U(channels: ChannelItem[], options?: { onlyActive?: b
     return a.name.localeCompare(b.name);
   });
 
-  const outputLines: string[] = ['#EXTM3U'];
+  const outputLines: string[] = ['#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"'];
+  const exportedUrls = new Set<string>();
 
   for (const ch of sorted) {
     let chosenCandidate = ch.candidates[ch.selectedUrlIndex] || ch.candidates[0];
 
-    // If onlyActive is true, verify that the candidate is active or find one active candidate
     if (options?.onlyActive) {
       const activeCand = ch.candidates.find(c => c.status === 'active');
       if (!activeCand) {
-        // Skip channel if no active link
         continue;
       }
       chosenCandidate = activeCand;
     }
 
     if (chosenCandidate) {
-      outputLines.push(ch.extinf);
-      outputLines.push(chosenCandidate.url);
+      const cleanUrl = chosenCandidate.url.split('|')[0].trim();
+      // Ensure strict single occurrence of any stream URL in the final M3U
+      if (!exportedUrls.has(cleanUrl)) {
+        exportedUrls.add(cleanUrl);
+        outputLines.push(ch.extinf);
+        outputLines.push(chosenCandidate.url);
+      }
     }
   }
 

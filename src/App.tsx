@@ -299,31 +299,63 @@ export const App: React.FC = () => {
     }
   };
 
-  // Remove Dead Links
+  // Enterprise Clean: Remove dead links, deduplicate cross-channel URLs, keep 1 best link per channel
   const handleRemoveDeadLinks = () => {
     let removedChannels = 0;
     let prunedLinks = 0;
+    let duplicateUrlsDiscarded = 0;
+    const globalUsedUrls = new Set<string>();
 
-    const cleaned = channels
-      .map(ch => {
-        const remainingCandidates = ch.candidates.filter(c => c.status !== 'dead');
-        prunedLinks += ch.candidates.length - remainingCandidates.length;
+    const cleaned: ChannelItem[] = [];
 
-        if (remainingCandidates.length === 0) {
-          removedChannels++;
-          return null;
-        }
+    for (const ch of channels) {
+      // Filter out confirmed dead streams
+      const aliveCandidates = ch.candidates.filter(c => c.status !== 'dead');
+      prunedLinks += ch.candidates.length - aliveCandidates.length;
 
-        return {
-          ...ch,
-          candidates: remainingCandidates,
-          selectedUrlIndex: 0
-        };
-      })
-      .filter((ch): ch is ChannelItem => ch !== null);
+      // Find first available stream whose URL hasn't been claimed by any other channel
+      let chosenCandidate: StreamCandidate | null = null;
+
+      // Prefer active/verified working candidate first
+      const activeCandidate = aliveCandidates.find(
+        c => c.status === 'active' && !globalUsedUrls.has(c.url.split('|')[0].trim())
+      );
+
+      if (activeCandidate) {
+        chosenCandidate = activeCandidate;
+      } else {
+        // Fallback to first available candidate not used globally
+        chosenCandidate = aliveCandidates.find(
+          c => !globalUsedUrls.has(c.url.split('|')[0].trim())
+        ) || null;
+      }
+
+      if (!chosenCandidate) {
+        // Channel has no unique working link remaining
+        removedChannels++;
+        continue;
+      }
+
+      // Claim URL globally
+      const cleanUrl = chosenCandidate.url.split('|')[0].trim();
+      globalUsedUrls.add(cleanUrl);
+
+      // Track duplicate backup links discarded
+      duplicateUrlsDiscarded += aliveCandidates.length - 1;
+
+      // Keep single best link for this channel
+      cleaned.push({
+        ...ch,
+        candidates: [chosenCandidate],
+        selectedUrlIndex: 0
+      });
+    }
 
     setChannels(cleaned);
-    addLog(`🧹 Cleaned: Removed ${removedChannels} dead channels and pruned ${prunedLinks} dead links`, 'ok');
+    addLog(
+      `🧹 Enterprise Clean: Pruned ${removedChannels} channels, discarded ${duplicateUrlsDiscarded} duplicate links, enforcing 1 unique stream per channel.`,
+      'ok'
+    );
   };
 
   // Export M3U

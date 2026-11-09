@@ -1,0 +1,5 @@
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"
+#EXTINF:0 group-title="Экстрим" tvg-logo="https://iptvx.one/picons/extreme-sports.png" tvg-id="extreme-sports",Extreme Sports [576p]
+http://stream.mcquack.net/148/index.m3u8
+#EXTINF:0 group-title="Экстрим" tvg-logo="https://iptvx.one/picons/trace-sport-stars.png" tvg-id="trace-sport-stars",Trace Sport Stars [1080p]
+http://stream.mcquack.net/256/index.m3u8

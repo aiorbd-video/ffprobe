@@ -153,10 +153,12 @@ export const App: React.FC = () => {
           httpStatus: result.status,
           contentType: result.contentType,
           codecType: result.codecType,
+          resolutionTag: result.resolutionTag,
           lastChecked: Date.now()
         });
+        const resLabel = result.resolutionTag ? ` [${result.resolutionTag}]` : '';
         addLog(
-          `🟢 OK: [${channel.group}] ${channel.name} (Latency: ${result.latencyMs}ms, ${result.codecType || 'Stream'})`,
+          `🟢 OK: [${channel.group}] ${channel.name}${resLabel} (Latency: ${result.latencyMs}ms, ${result.codecType || 'Stream'})`,
           'ok',
           channel.group,
           channel.name
@@ -245,11 +247,13 @@ export const App: React.FC = () => {
             httpStatus: res.status,
             contentType: res.contentType,
             codecType: res.codecType,
+            resolutionTag: res.resolutionTag,
             lastChecked: Date.now()
           });
           okFound++;
+          const resInfo = res.resolutionTag ? ` [${res.resolutionTag}]` : '';
           addLog(
-            `🟢 OK: [${channel.group}] ${channel.name} (Selected link #${i + 1}, ${res.latencyMs}ms)`,
+            `🟢 OK: [${channel.group}] ${channel.name}${resInfo} (Selected link #${i + 1}, ${res.latencyMs}ms)`,
             'ok',
             channel.group,
             channel.name
@@ -372,6 +376,28 @@ export const App: React.FC = () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     addLog(`✅ Export complete: ${link.download}`, 'ok');
+  };
+
+  // Export specific Category M3U
+  const handleExportCategory = (category: string) => {
+    const categoryChannels = channels.filter(c => c.group.toLowerCase() === category.toLowerCase());
+    if (categoryChannels.length === 0) {
+      addLog(`⚠️ No channels found for category: ${category}`, 'warning');
+      return;
+    }
+    const cleanFilename = category.toLowerCase().replace(/[^a-z0-9]/g, '_') + '.m3u';
+    addLog(`💾 Generating & downloading ${categoryChannels.length} channels for ${cleanFilename}...`, 'info');
+    const content = serializeM3U(categoryChannels, { onlyActive: false });
+    const blob = new Blob([content], { type: 'audio/x-mpegurl;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = cleanFilename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    addLog(`✅ Category playlist exported: ${cleanFilename}`, 'ok');
   };
 
   // Copy M3U
@@ -518,6 +544,7 @@ export const App: React.FC = () => {
         onToggleChecking={handleToggleBatchChecking}
         onRemoveDeadLinks={handleRemoveDeadLinks}
         onExportM3U={handleExportM3U}
+        onExportCategory={handleExportCategory}
         onCopyM3U={handleCopyM3U}
         onOpenSources={() => setIsSourcesModalOpen(true)}
         onToggleConsole={() => setIsConsoleOpen(!isConsoleOpen)}

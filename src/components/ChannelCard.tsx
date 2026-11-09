@@ -65,9 +65,16 @@ export const ChannelCard: React.FC<ChannelCardProps> = ({
             )}
 
             <div className="overflow-hidden">
-              <h3 className="font-bold text-slate-100 text-sm truncate" title={channel.name}>
-                {channel.name}
-              </h3>
+              <div className="flex items-center space-x-1.5 truncate">
+                <h3 className="font-bold text-slate-100 text-sm truncate" title={channel.name}>
+                  {channel.name}
+                </h3>
+                {primaryCandidate?.resolutionTag && (
+                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    {primaryCandidate.resolutionTag}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center space-x-2 mt-0.5">
                 <span className="text-[11px] font-medium text-cyan-300 bg-cyan-950/60 border border-cyan-800/60 px-2 py-0.5 rounded-full">
                   {channel.group}

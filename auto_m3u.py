@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Enterprise M3U Master Stream Processor & Health Engine
+Enterprise M3U Master Stream Processor & Health Engine v2.0
 - 100% Secret-Gist Driven (Zero Hardcoded Fallbacks)
-- Strict Cross-Channel Global URL Deduplication (No duplicate URLs across any channels)
-- Canonical Channel Name Normalization (Strips [Backup], 1080p, HD, prefixes)
-- Single Best Working Stream Per Channel
-- Smart VOD / Bangladesh / India / Sports Categorization
+- Strict Cross-Channel Global URL Deduplication
+- Canonical Channel Name Normalization
+- Stream Resolution & Quality Detection (4K, 1080p, 720p, SD via FFprobe)
+- Best Quality / Lowest Latency Auto Selection
+- Multi-Category Playlists Split (working.m3u + bangladesh.m3u, sports.m3u, india.m3u, movies.m3u, news.m3u, others.m3u)
+- Telegram & Discord Instant Notification Alerts
 - High-Performance Async Probing + FFprobe Validation
 """
 
@@ -25,6 +27,10 @@ from urllib.parse import urlparse
 
 # --- কনফিগারেশন ---
 GIST_SOURCES_URL = os.environ.get("GIST_SOURCES_URL")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+
 WORKING_FILE = "working.m3u"
 CONCURRENCY_LIMIT = 50       # প্যারালাল চেকিং থ্রেড লিমিট
 HTTP_TIMEOUT = 8             # HTTP হেড/গেট টাইমআউট (সেকেন্ড)
@@ -54,20 +60,16 @@ def get_random_ua():
 def clean_canonical_name(raw_name: str) -> str:
     """
     চ্যানেলের নাম থেকে নয়েজ ও ব্যাকআপ ট্যাগ পরিষ্কার করে একটি সিঙ্গেল ক্যানোনিকাল নাম তৈরি করে।
-    যেমন: 'Somoy TV [Backup 1]', 'Somoy TV (1080p)', 'Somoy TV HD', '8NTV (HD)' -> 'Somoy TV', 'NTV'
     """
     name = raw_name.strip()
     
-    # ইউআরএল টাইপ টেক্সট থাকলে বাদ দেওয়া
     if name.startswith("#http") or name.startswith("http"):
         parts = name.split("/")
         name = parts[-1].replace(".m3u8", "").replace("-", " ")
     
-    # শুরুর সংখ্যা বা অবাঞ্ছিত ক্যারেক্টার বাদ দেওয়া (যেমন 8NTV -> NTV)
     name = re.sub(r'^\d+([A-Za-z])', r'\1', name)
     name = re.sub(r'^(BD|IN|UK|US|HINDI|BANGLA)[\s:\-_|]+', '', name, flags=re.IGNORECASE)
 
-    # ব্যাকআপ ও রেজ্যুলেশন ট্যাগ রিমুভ
     noise_patterns = [
         r'\[backup\s*\d*\]', r'\(backup\s*\d*\)', r'backup\s*\d*',
         r'\[\s*\d+p\s*\]', r'\(\s*\d+p\s*\)', r'\b\d{3,4}p\b',
@@ -84,14 +86,29 @@ def clean_canonical_name(raw_name: str) -> str:
     for pattern in noise_patterns:
         name = re.sub(pattern, '', name, flags=re.IGNORECASE)
 
-    # অতিরিক্ত স্পেস পরিষ্কার
     name = re.sub(r'[\s\-_|]+', ' ', name).strip()
     return name.title() if name else "Unknown Channel"
 
+def format_resolution_tag(width: int, height: int) -> str:
+    """উচ্চতা ও প্রস্থ দেখে রেজোলিউশন ট্যাগ তৈরি করে (4K, 1080p, 720p, SD)"""
+    if not height or height <= 0:
+        return ""
+    if height >= 2160 or width >= 3840:
+        return "4K"
+    elif height >= 1080 or width >= 1900:
+        return "1080p"
+    elif height >= 720 or width >= 1200:
+        return "720p"
+    elif height >= 576:
+        return "576p"
+    elif height >= 480:
+        return "480p"
+    else:
+        return "SD"
+
 def load_sources_from_gist():
     """
-    শুধুমাত্র Gist Secret URL থেকে লিংক ফেচ করে।
-    কোনো ফলব্যাক লিংক থাকবে না - সিক্রেট না থাকলে প্রোগ্রাম বন্ধ হবে।
+    শুধুমাত্র Gist Secret URL থেকে লিংক ফেচ করে। (Zero Fallback)
     """
     if not GIST_SOURCES_URL or not GIST_SOURCES_URL.strip():
         logger.critical("🛑 CRITICAL ERROR: GIST_SOURCES_URL secret is missing!")
@@ -126,6 +143,62 @@ def load_sources_from_gist():
         logger.critical(f"🛑 Fatal Exception while reading Gist: {str(e)}")
         sys.exit(1)
 
+def send_notifications(stats: dict):
+    """
+    টেলিগ্রাম ও ডিসকর্ড বট দিয়ে রান সম্পন্ন হওয়ার নোটিফিকেশন পাঠায়
+    """
+    msg_lines = [
+        "📺 *M3U Stream Health Check Completed!*",
+        f"⏱️ *Duration:* {stats.get('duration', '0s')}",
+        f"✅ *Verified Active Channels:* {stats.get('active_count', 0)}",
+        f"🗑️ *Discarded/Dead Links:* {stats.get('dead_count', 0)}",
+        f"📊 *Total Ingested Links:* {stats.get('total_raw', 0)}",
+        f"🌟 *Category Breakdown:*",
+    ]
+    for cat, count in stats.get('categories', {}).items():
+        msg_lines.append(f"  • {cat}: {count}")
+
+    msg_lines.append("\n📁 *Playlists Updated:* `working.m3u` & category files")
+    message_text = "\n".join(msg_lines)
+
+    # ১. টেলিগ্রাম নোটিফিকেশন
+    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+        try:
+            tg_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            payload = {
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": message_text,
+                "parse_mode": "Markdown"
+            }
+            tg_resp = requests.post(tg_url, json=payload, timeout=10)
+            if tg_resp.status_code == 200:
+                logger.info("📱 Telegram alert notification sent successfully!")
+            else:
+                logger.warning(f"⚠️ Telegram alert failed (Status {tg_resp.status_code}): {tg_resp.text}")
+        except Exception as tg_err:
+            logger.warning(f"⚠️ Telegram notification error: {str(tg_err)}")
+
+    # ২. ডিসকর্ড নোটিফিকেশন
+    if DISCORD_WEBHOOK_URL:
+        try:
+            discord_payload = {
+                "username": "M3U Stream Monitor",
+                "avatar_url": "https://cdn-icons-png.flaticon.com/512/860/860330.png",
+                "embeds": [{
+                    "title": "📺 M3U Stream Health Check Completed",
+                    "color": 3066993, # Emerald green
+                    "description": message_text.replace("*", "**"),
+                    "footer": {"text": "Enterprise IPTV Stream Engine"}
+                }]
+            }
+            dc_resp = requests.post(DISCORD_WEBHOOK_URL, json=discord_payload, timeout=10)
+            if dc_resp.status_code in [200, 204]:
+                logger.info("💬 Discord webhook notification sent successfully!")
+            else:
+                logger.warning(f"⚠️ Discord alert failed (Status {dc_resp.status_code})")
+        except Exception as dc_err:
+            logger.warning(f"⚠️ Discord notification error: {str(dc_err)}")
+
 class EnterpriseM3UEngine:
     def __init__(self, sources):
         self.sources = sources
@@ -135,6 +208,7 @@ class EnterpriseM3UEngine:
         self.total_raw_links = 0
         self.duplicate_urls_discarded = 0
         self.dead_count = 0
+        self.start_time = time.time()
 
     def standardize_data(self, line: str, url: str):
         """ক্যাটাগরি, ভিওডি এবং দেশের নাম ফিক্স করার স্মার্ট ইঞ্জিন"""
@@ -149,7 +223,6 @@ class EnterpriseM3UEngine:
 
         clean_group = original_group.title()
 
-        # URL অ্যানালাইসিস
         url_lower = url.lower()
         parsed_url = urlparse(url_lower)
         url_path = parsed_url.path
@@ -209,13 +282,11 @@ class EnterpriseM3UEngine:
             else:
                 clean_group = original_group.title()
 
-        # নতুন গ্রুপ ও ক্যানোনিকাল নাম দিয়ে লাইনটি আপডেট করা
         if group_match:
             new_line = line.replace(f'group-title="{original_group}"', f'group-title="{clean_group}"')
         else:
             new_line = f'{parts[0]} group-title="{clean_group}"'
 
-        # চ্যানেলের নাম ক্যানোনিকাল নামে সেট
         header_part = new_line.split(',', 1)[0]
         final_extinf = f"{header_part},{canonical_name}"
 
@@ -248,7 +319,7 @@ class EnterpriseM3UEngine:
                         self.total_raw_links += 1
                         clean_url = url.split('|')[0].strip()
 
-                        # গ্লোবাল ইউআরএল ডিডুপ্লিকেশন (আগে কোনো চ্যানেলে থাকলে বাদ)
+                        # গ্লোবাল ইউআরএল ডিডুপ্লিকেশন
                         if clean_url in self.global_seen_urls:
                             self.duplicate_urls_discarded += 1
                             i += 2
@@ -274,9 +345,9 @@ class EnterpriseM3UEngine:
 
     async def probe_candidate(self, session, candidate):
         """
-        দ্বৈত যাচাইকরণ (Dual-stage verification):
+        দ্বৈত যাচাইকরণ + রেজোলিউশন ও কোয়ালিটি ডিটেকশন:
         ১. HTTP HEAD/GET (Latency & Reachability)
-        ২. FFprobe Codec Validation
+        ২. FFprobe Codec, Width, Height Validation
         """
         url = candidate["url"]
         headers = {"User-Agent": get_random_ua()}
@@ -286,16 +357,16 @@ class EnterpriseM3UEngine:
         try:
             async with session.head(url, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True) as resp:
                 if resp.status not in [200, 206, 301, 302]:
-                    # ফলব্যাক: GET Range
                     async with session.get(url, headers={**headers, "Range": "bytes=0-1024"}, timeout=HTTP_TIMEOUT, allow_redirects=True) as get_resp:
                         if get_resp.status not in [200, 206, 301, 302]:
-                            return False, 0
+                            return False, 0, 0, 0, ""
         except Exception:
-            return False, 0
+            return False, 0, 0, 0, ""
 
-        # ধাপ ২: FFprobe স্ট্রিম ভ্যালিডেশন
+        # ধাপ ২: FFprobe স্ট্রিম ভ্যালিডেশন + রেজোলিউশন এক্সট্রাকশন
         cmd = [
             "ffprobe", "-user_agent", headers["User-Agent"], "-v", "error",
+            "-select_streams", "v:0",
             "-show_entries", "stream=codec_type,width,height",
             "-of", "default=noprint_wrappers=1:nokey=1", url
         ]
@@ -305,58 +376,128 @@ class EnterpriseM3UEngine:
                 *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
             stdout, stderr = await asyncio.wait_for(process.communicate(), timeout=FFPROBE_TIMEOUT)
-            output = stdout.decode('utf-8').strip()
+            output = stdout.decode('utf-8').strip().splitlines()
             latency_ms = int((time.time() - start_time) * 1000)
 
-            if process.returncode == 0 and ("video" in output or "audio" in output):
-                return True, latency_ms
+            # width and height extraction
+            width = 0
+            height = 0
+            has_video = False
+
+            for item in output:
+                item = item.strip()
+                if item == "video":
+                    has_video = True
+                elif item.isdigit():
+                    val = int(item)
+                    if width == 0:
+                        width = val
+                    elif height == 0:
+                        height = val
+
+            # যদি অডিও চ্যানেল বা স্ট্রিম হয়
+            if process.returncode == 0:
+                res_tag = format_resolution_tag(width, height)
+                return True, latency_ms, width, height, res_tag
         except Exception:
             try:
                 process.kill()
             except Exception:
                 pass
 
-        return False, 0
+        return False, 0, 0, 0, ""
 
     async def process_channel_group(self, session, semaphore, canonical_name, candidates):
         """
-        প্রতিটি চ্যানেলের জন্য শুধুমাত্র ১টি বেস্ট ওয়ার্কিং স্ট্রিম সিলেক্ট করে,
-        বাকি সব অল্টারনেটিভ বা ডেড লিংক সম্পূর্ণ বাদ দেওয়া হয়।
+        প্রতিটি চ্যানেলের সব ওয়ার্কিং লিংক টেস্ট করে সর্বোচ্চ রেজোলিউশন
+        ও সর্বনিম্ন লেটেন্সির সেরা লিংকটি স্বয়ংক্রিয়ভাবে বেছে নেয়।
         """
         async with semaphore:
-            for candidate in candidates:
-                is_working, latency_ms = await self.probe_candidate(session, candidate)
-                if is_working:
-                    # ১টি মাত্র কার্যকরী লিংক সিলেক্ট করা হলো
-                    self.working_channels.append(candidate)
-                    self.dead_count += len(candidates) - 1
-                    logger.info(f"🟢 OK: [{candidate['group']}] {canonical_name} ({latency_ms}ms) -> Selected 1 best link")
-                    return
+            verified_options = []
 
-            # সবগুলো লিংক ফেইল করলে
-            self.dead_count += len(candidates)
-            logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {canonical_name} (All {len(candidates)} candidates failed)")
+            for candidate in candidates:
+                is_working, latency_ms, width, height, res_tag = await self.probe_candidate(session, candidate)
+                if is_working:
+                    # যদি রেজোলিউশন ট্যাগ থাকে, চ্যানেলের নামের সাথে যোগ করা
+                    extinf = candidate["extinf"]
+                    if res_tag:
+                        extinf_parts = extinf.split(',', 1)
+                        header = extinf_parts[0]
+                        extinf = f'{header},{canonical_name} [{res_tag}]'
+
+                    verified_options.append({
+                        **candidate,
+                        "extinf": extinf,
+                        "latency_ms": latency_ms,
+                        "height": height,
+                        "width": width,
+                        "res_tag": res_tag
+                    })
+
+            if verified_options:
+                # বেস্ট কোয়ালিটি সর্টিং: সর্বোচ্চ রেজোলিউশন আগে, সমান হলে কম লেটেন্সি আগে
+                verified_options.sort(key=lambda x: (-x["height"], x["latency_ms"]))
+                best_choice = verified_options[0]
+
+                self.working_channels.append(best_choice)
+                self.dead_count += len(candidates) - 1
+                res_info = f" [{best_choice['res_tag']}]" if best_choice['res_tag'] else ""
+                logger.info(f"🟢 OK: [{best_choice['group']}] {canonical_name}{res_info} ({best_choice['latency_ms']}ms) -> Best link selected")
+            else:
+                self.dead_count += len(candidates)
+                logger.info(f"🔴 DEAD: [{candidates[0]['group']}] {canonical_name} (All {len(candidates)} candidates failed)")
 
     def save_output(self):
-        logger.info("💾 Sorting channels by Group & Canonical Name and writing working.m3u...")
-        # গ্রুপ ও নামের বর্ণানুক্রমিক সাজানো
+        """
+        ১. মাস্টার working.m3u তৈরি করে
+        ২. ক্যাটাগরি-ভিত্তিক আলাদা M3U তৈরি করে (bangladesh.m3u, sports.m3u, etc.)
+        """
+        logger.info("💾 Sorting channels by Group & Canonical Name...")
         sorted_channels = sorted(self.working_channels, key=lambda x: (x["group"], x["name"]))
 
+        m3u_header = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"\n'
+
+        # মাস্টার ফাইল
         with open(WORKING_FILE, "w", encoding="utf-8") as f:
-            f.write('#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"\n')
+            f.write(m3u_header)
             for ch in sorted_channels:
                 f.write(ch["extinf"] + "\n")
                 f.write(ch["url"] + "\n")
+
+        # ক্যাটাগরি অনুযায়ী ফাইল স্প্লিট
+        categories_dir = "playlists"
+        os.makedirs(categories_dir, exist_ok=True)
+
+        category_map = {}
+        for ch in sorted_channels:
+            grp = ch["group"]
+            if grp not in category_map:
+                category_map[grp] = []
+            category_map[grp].append(ch)
+
+        for grp_name, ch_list in category_map.items():
+            # ফাইলনেম তৈরি যেমন: Bangladesh -> bangladesh.m3u
+            clean_filename = re.sub(r'[^a-zA-Z0-9_\-]', '', grp_name.lower().replace(" ", "_").replace("/", "_")) + ".m3u"
+            cat_filepath = os.path.join(categories_dir, clean_filename)
+            with open(cat_filepath, "w", encoding="utf-8") as cf:
+                cf.write(f'#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"\n')
+                for ch in ch_list:
+                    cf.write(ch["extinf"] + "\n")
+                    cf.write(ch["url"] + "\n")
+
+        logger.info(f"📁 Generated Master playlist: {WORKING_FILE}")
+        logger.info(f"📁 Generated {len(category_map)} category playlists inside /{categories_dir}/ directory.")
+
+        return category_map
 
     async def run(self):
         if shutil.which("ffprobe") is None:
             logger.critical("❌ FFprobe not found in system PATH! Please install ffmpeg.")
             sys.exit(1)
 
-        logger.info("🚀 Starting Enterprise M3U Stream Engine...")
+        logger.info("🚀 Starting Enterprise M3U Stream Engine v2.0...")
         logger.info(f"⚙️ Concurrency: {CONCURRENCY_LIMIT} threads | Timeout: {HTTP_TIMEOUT}s")
 
-        # ধাপ ১: সোর্স প্লেলিস্ট ডাউনলোড
         async with aiohttp.ClientSession() as session:
             download_tasks = [self.fetch_playlist(session, url) for url in self.sources]
             await asyncio.gather(*download_tasks)
@@ -365,7 +506,7 @@ class EnterpriseM3UEngine:
         logger.info(f"📊 Total Raw Streams Ingested: {self.total_raw_links}")
         logger.info(f"🗑️ Duplicate Cross-Channel URLs Discarded: {self.duplicate_urls_discarded}")
         logger.info(f"📺 Unique Canonical Channels Identified: {total_unique_channels}")
-        logger.info("⚡ Starting async stream health validation...")
+        logger.info("⚡ Starting async stream health & resolution validation...")
 
         semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         conn = aiohttp.TCPConnector(limit=CONCURRENCY_LIMIT, ssl=False)
@@ -383,20 +524,34 @@ class EnterpriseM3UEngine:
                 progress_pct = min(100, int(((i + len(chunk)) / total_unique_channels) * 100))
                 logger.info(f"📈 Progress: Checked {min(i + chunk_size, total_unique_channels)} / {total_unique_channels} Channels ({progress_pct}%)")
 
-        self.save_output()
+        category_map = self.save_output()
+
+        elapsed_sec = int(time.time() - self.start_time)
+        duration_str = f"{elapsed_sec // 60}m {elapsed_sec % 60}s"
+
+        stats = {
+            "duration": duration_str,
+            "active_count": len(self.working_channels),
+            "dead_count": self.dead_count,
+            "total_raw": self.total_raw_links,
+            "categories": {k: len(v) for k, v in category_map.items()}
+        }
 
         logger.info("==================================================")
         logger.info("🎉 ENTERPRISE RUN COMPLETED SUCCESSFULLY!")
-        logger.info(f"✅ Verified Active Channels (Single link each): {len(self.working_channels)}")
+        logger.info(f"⏱️ Duration: {duration_str}")
+        logger.info(f"✅ Verified Active Channels: {len(self.working_channels)}")
         logger.info(f"🗑️ Dead/Backup Discarded Links: {self.dead_count}")
-        logger.info(f"📁 Output File: {WORKING_FILE}")
+        logger.info(f"📁 Output File: {WORKING_FILE} & /playlists/*")
         logger.info("==================================================")
+
+        # নোটিফিকেশন পাঠানো
+        send_notifications(stats)
 
 if __name__ == "__main__":
     if sys.platform == 'win32':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
-    # Gist থেকে সোর্স লোড (নো ফলব্যাক)
     secret_sources = load_sources_from_gist()
     engine = EnterpriseM3UEngine(secret_sources)
     asyncio.run(engine.run())

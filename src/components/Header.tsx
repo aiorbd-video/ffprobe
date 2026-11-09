@@ -19,6 +19,7 @@ interface HeaderProps {
   onToggleChecking: () => void;
   onRemoveDeadLinks: () => void;
   onExportM3U: (onlyActive: boolean) => void;
+  onExportCategory?: (category: string) => void;
   onCopyM3U: () => void;
   onOpenSources: () => void;
   onToggleConsole: () => void;
@@ -32,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleChecking,
   onRemoveDeadLinks,
   onExportM3U,
+  onExportCategory,
   onCopyM3U,
   onOpenSources,
   onToggleConsole,
@@ -133,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 z-50 text-xs">
+              <div className="absolute right-0 mt-2 w-64 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 z-50 text-xs">
                 <button
                   onClick={() => {
                     onExportM3U(true);
@@ -154,6 +156,27 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="font-semibold text-slate-200">Entire Cleaned Playlist</span>
                   <span className="text-[11px] text-slate-400 font-mono">All standardized channels</span>
                 </button>
+                
+                {onExportCategory && (
+                  <div className="mt-1 pt-1 border-t border-slate-800">
+                    <p className="px-3 py-1 text-[10px] uppercase font-mono text-cyan-400 font-semibold tracking-wider">
+                      Export By Category
+                    </p>
+                    {['Bangladesh', 'Sports', 'India', 'News', 'VOD / Movies'].map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          onExportCategory(cat);
+                          setShowExportMenu(false);
+                        }}
+                        className="w-full text-left px-3 py-1.5 rounded hover:bg-slate-800 text-slate-300 hover:text-white flex items-center justify-between font-mono text-[11px]"
+                      >
+                        <span>{cat}</span>
+                        <span className="text-[10px] text-slate-500">.m3u</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

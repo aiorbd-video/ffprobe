@@ -7,6 +7,7 @@ export interface ProbeResult {
   latencyMs: number;
   contentType?: string;
   codecType?: string;
+  resolutionTag?: string;
   error?: string;
 }
 

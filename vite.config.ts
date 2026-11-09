@@ -207,6 +207,15 @@ function m3uApiPlugin(): Plugin {
             const latencyMs = Date.now() - startTime;
             const isOk = status >= 200 && status < 400;
 
+            let resolutionTag = '';
+            if (cleanUrl.includes('1080') || cleanUrl.includes('fhd')) {
+              resolutionTag = '1080p';
+            } else if (cleanUrl.includes('720') || cleanUrl.includes('hd')) {
+              resolutionTag = '720p';
+            } else if (cleanUrl.includes('4k') || cleanUrl.includes('2160')) {
+              resolutionTag = '4K';
+            }
+
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({
@@ -215,6 +224,7 @@ function m3uApiPlugin(): Plugin {
               status,
               contentType,
               latencyMs,
+              resolutionTag,
               codecType: contentType.includes('mpegurl') || cleanUrl.includes('.m3u8')
                 ? 'HLS / Video'
                 : contentType.includes('video')

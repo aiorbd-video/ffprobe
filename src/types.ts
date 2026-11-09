@@ -9,6 +9,9 @@ export interface StreamCandidate {
   contentType?: string;
   error?: string;
   codecType?: string;
+  width?: number;
+  height?: number;
+  resolutionTag?: string; // e.g. "1080p", "720p", "4K", "SD"
   lastChecked?: number;
 }
 
@@ -23,6 +26,7 @@ export interface ChannelItem {
   candidates: StreamCandidate[];
   selectedUrlIndex: number; // Index of the chosen/primary working stream
   tvgId?: string;
+  resolutionTag?: string;
 }
 
 export interface LogEntry {

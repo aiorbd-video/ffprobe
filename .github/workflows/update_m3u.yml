@@ -42,18 +42,23 @@ jobs:
 
       - name: 🔍 Run M3U Stream Checker
         env:
-          # এখানে GitHub Secret থেকে আপনার প্রাইভেট Gist URL ইনজেক্ট হচ্ছে
+          # GitHub Secrets থেকে সিক্রেট ভ্যালুগুলো ইনজেক্ট হচ্ছে
           GIST_SOURCES_URL: ${{ secrets.GIST_SOURCES_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           python auto_m3u.py
 
       - name: 📊 Generate Summary Report
         if: always()
         run: |
-          echo "### 📺 M3U Health Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "### 📺 Enterprise M3U Health Check Summary" >> $GITHUB_STEP_SUMMARY
           if [ -f "working.m3u" ]; then
             TOTAL_CHANNELS=$(grep -c "^#EXTINF" working.m3u || echo 0)
-            echo "- **Verified Active Channels (Single Link Each):** $TOTAL_CHANNELS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Verified Active Channels (Single Best Stream):** $TOTAL_CHANNELS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Multi-Category Playlists:** Generated in \`playlists/\`" >> $GITHUB_STEP_SUMMARY
+            echo "- **Auto Quality Tagger:** 4K / 1080p / 720p / SD enabled" >> $GITHUB_STEP_SUMMARY
             echo "- **Schedule:** Runs every 24 hours ⏱️" >> $GITHUB_STEP_SUMMARY
             echo "- **Status:** Completed successfully ✅" >> $GITHUB_STEP_SUMMARY
             echo "- **Last Updated:** $(date -u)" >> $GITHUB_STEP_SUMMARY
@@ -64,14 +69,14 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # শুধুমাত্র working.m3u ফাইলে পরিবর্তন থাকলে পুশ করবে
-          if git status --porcelain working.m3u | grep -q "working.m3u"; then
-            git add working.m3u
-            git commit -m "🚀 Auto Update: Verified working.m3u [skip ci]"
+          # working.m3u বা playlists/ ফোল্ডারে পরিবর্তন থাকলে পুশ করবে
+          git add working.m3u playlists/ 2>/dev/null || true
+          if git status --porcelain | grep -qE "(working\.m3u|playlists/)"; then
+            git commit -m "🚀 Auto Update: Verified working.m3u & category playlists [skip ci]"
             git push
             echo "Changes pushed successfully."
           else
-            echo "No changes in working.m3u. Skipping git commit."
+            echo "No stream updates found. Skipping git commit."
           fi
 
       - name: 🧹 Delete Previous Workflow Runs
@@ -82,7 +87,6 @@ jobs:
           echo "Current Run ID: ${{ github.run_id }}"
           echo "Searching for completed previous runs to delete..."
           
-          # পূর্বের ফিনিশড রান আইডিগুলো বের করা
           PREVIOUS_RUNS=$(gh run list --workflow=update_m3u.yml --status=completed --json databaseId --jq '.[].databaseId' || echo "")
           
           for RUN_ID in $PREVIOUS_RUNS; do

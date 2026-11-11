@@ -5,5 +5,21 @@ https://edge.socialsmart.tv/naturaltv/bant1/playlist.m3u8
 https://tvsen6.aynaott.com/cnbc/index.m3u8?e=1780847981&u=78be6644-0a65-48ec-81a4-089ac65a2619&token=1d922607483795b84aa1492bd34cae83
 #EXTINF:-1 group-title="English" tvg-logo="https://s3.aynaott.com/storage/7deacf82c7f75cf7aaee5e0935c3d2c8",Court Tv [1080p]
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01438-ewscrippscompan-courttv-tablo/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/3f7983c0bc7cacd206dd195a2eff6b10" group-title="English",Discovery Family [SD]
+https://tvsen5.aynaott.com/discoveryfamily/index.m3u8?e=1781708098&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=74d6d838c8713c901a128c89150e1f1b
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/582675c375dfa47c2d66e6639fcd2eac" group-title="English",Food Network [SD]
+https://tvsen6.aynaott.com/foodnetwork/index.m3u8?e=1781708099&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=909622f887c8a932bd0ac366964a3b57
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/4f6486854be670f7458ab60d0402ee42" group-title="English",Fox 5 [SD]
+https://tvsen6.aynaott.com/fox5/index.m3u8?e=1781708098&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=6f8844c5367b5fbc8f4c167091384927
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/20e4602dd584784607e5eff3963cdde6" group-title="English",Fox Business [SD]
+https://tvsen6.aynaott.com/foxbusiness/index.m3u8?e=1781708098&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=2a3b6121a0ec2f6970fd33183cac1349
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/c0bfcdb40393eb5824907adaaa63a653" group-title="English",Mtv [SD]
+https://tvsen6.aynaott.com/mtv/index.m3u8?e=1781708099&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=a90c3037d4fea44cf0b427ec16819459
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/2dce8297266bbc9c235c27119f914e1b" group-title="English",Nat Geo Tv [SD]
+https://tvsen6.aynaott.com/natgeo/index.m3u8?e=1781708099&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=520b224afa08627737a0a7280306f850
 #EXTINF:-1 group-title="English" tvg-logo="https://s3.aynaott.com/storage/f1fbcbc6cd325f5324eabb3bc733584e",Rds Social Tv [SD]
 https://tvsen6.aynaott.com/RDSSocialTV/index.m3u8?e=1780847980&u=78be6644-0a65-48ec-81a4-089ac65a2619&token=1e9c55bd05614cdc47f30f6d8324b4c3
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/a7f87f1e71905ee14429ed26abd29b2a" group-title="English",Travel Channel [SD]
+https://tvsen6.aynaott.com/travelxp/index.m3u8?e=1781708099&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=970378db267f01e16656dd0fb2021039
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/376b8483457b06dbc5b7b7b327a21ac6" group-title="English",Usa Tv [SD]
+https://tvsen6.aynaott.com/usa/index.m3u8?e=1781708099&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=b4c65574a86887db64ea830e9739799d

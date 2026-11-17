@@ -21,6 +21,8 @@ https://amg00861-terninternation-lifestyle-samsungau-kdlyy.amagi.tv/playlist/amg
 https://amg00861-terninternation-inwild-samsunguk-w5wic.amagi.tv/playlist/amg00861-terninternation-inwild-samsunguk/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Inwonder [SD]
 https://amg00861-terninternation-inwonder-samsungau-1k63k.amagi.tv/playlist/amg00861-terninternation-inwonder-samsungau/playlist.m3u8
+#EXTINF:-1 group-title="[Gen] General",Mercy Tv [1080p]
+https://5dd3981940faa.streamlock.net/mercytv/mercytv/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Pmc Telugu [720p]
 https://mumbai-edge.smartplaytv.in/PMC/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Pravasi Channel [1080p]
@@ -29,12 +31,8 @@ https://m6gdavepdn93-hls-live.5centscdn.com/pravasi/d0dbe915091d400bd8ee7f27f079
 https://ktismaservers.in:3902/live/salvationtvlive.m3u8
 #EXTINF:-1 group-title="[Gen] General",Sanskar Tv [480p]
 https://d26idhjf0y1p2g.cloudfront.net/out/v1/cd66dd25b9774cb29943bab54bbf3e2f/index.m3u8
-#EXTINF:-1 group-title="[Gen] General",Sanskar Web Tv [1080p]
-https://deatfcv3xdvi3.cloudfront.net/out/v1/7a43dd2f64e34ec28da1b4bd6923251a/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Satsang Tv [480p]
 https://d2vfwvjxwtwq1t.cloudfront.net/out/v1/6b24239d5517495b986e7705490c6e65/index.m3u8
-#EXTINF:-1 group-title="[Gen] General",Satsang Web Tv [720p]
-https://d1ji7e9jbzm5g8.cloudfront.net/out/v1/769f22f64d80442889306b9c4abea63c/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shalom Tv [1080p]
 https://d2c4zqo2rb5uf1.cloudfront.net/master.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shubh Tv [1080p]

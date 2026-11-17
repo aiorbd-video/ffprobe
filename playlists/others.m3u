@@ -15,6 +15,10 @@ https://live-hls-apps-aja-fa.getaj.net/AJA/01.m3u8
 https://live-hls-web-aja2-gcp.thehlive.com/AJA2/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Al Jazeera Mubasher [1080p]
 https://live-hls-apps-ajm-fa.getaj.net/AJM/index.m3u8
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Al Jazeera Mubasher 24 [1080p]
+https://live-hls-apps-ajm24-fa.getaj.net/AJM24/index.m3u8
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Al Jazeera Mubasher Broadcast 2 [1080p]
+https://live-hls-apps-ajm2-fa.getaj.net/AJM2/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Animal Planet Hd [SD]
 http://mfe01.cliptv.az/dash/Animal_Planet_HD345wer.ism/playlist.mpd
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",As3 Sport Tv [480p]
@@ -33,7 +37,7 @@ https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/s
 https://cdn3.wowza.com/5/ZWQ1K2NYTmpFbGsr/BEK-WOWZA-1/smil:BEKPRIMEW.smil/playlist.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Bollywood 4U [SD]
 https://streams2.sofast.tv/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/22d13e33-8705-40e8-9809-4e80aa795f15/manifest.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Bollywood Masala [1080p]
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Bollywood Masala
 https://streams2.sofast.tv/vglive-sk-373192/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Breaking News [SD]
 https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg02703-leadstory-leadstory-samsungau/playlist.m3u8
@@ -47,9 +51,7 @@ https://a-cdn.klowdtv.com/live1/cine_720p/playlist.m3u8
 https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Cnn (Us) [720p]
 https://turnerlive.warnermediacdn.com/hls/live/586495/cnngo/cnn_slate/VIDEO_0_3564000.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Cnn News [SD]
-https://amg01448-samsungin-cnnnow-samsungin-4npqg.amagi.tv/playlist/amg01448-samsungin-cnnnow-samsungin/playlist.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Discovery
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Discovery [1080p]
 https://svs.itworkscdn.net/asharqdiscoverylive/asharqd.smil/playlist_dvr.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Echosports [720p]
 https://a-cdn.klowdtv.com/live2/echosports_720p/playlist.m3u8
@@ -71,8 +73,6 @@ https://a-cdn.klowdtv.com/live2/ftf_720p/playlist.m3u8
 https://dnf08l6u6uxnz.cloudfront.net/master.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Iscreen Bd Aq
 https://m3u-tvb.pages.dev/ics.m3u8
-#EXTINF:-1  tvg-logo="https://pash.ink/storage/uploads/JungleBook_Logo.png" group-title="Others",Jungle Book [1080p]
-https://cc-4bhi5osabejc9.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-4bhi5osabejc9/junglebook.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Khabar [SD]
 https://d1msejlow1t3l4.cloudfront.net/fta/hindikhabar/playlist.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Ktv Bangla [720p]
@@ -137,8 +137,6 @@ http://serv30.vintera.tv:8081/sochi/sochi24_tv/playlist.m3u8
 https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Sport Fishing Tv [SD]
 https://streams2.sofast.tv/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/eea68b79-bfe2-451e-a227-d637a5b9548a/manifest.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Sportitalia [1080p]
-https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Sports First [1080p]
 https://d4ddgdmj1cvnm.cloudfront.net/scheduler/scheduleMaster/409.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Sportsgrid [SD]
@@ -155,15 +153,13 @@ http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/748388.ts
 https://rpn.bozztv.com/gusa/gusa-tvssportsbureau/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Tvs Sports [Not 24/7] [720p]
 https://rpn.bozztv.com/gusa/gusa-tvssports/index.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Tvs Women Sports [SD]
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Tvs Women Sports [480p]
 https://rpn.bozztv.com/gusa/gusa-tvswsn/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Tyc Sports [SD]
 https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Unknown Channel [1080p]
 https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Wild Life [SD]
-https://wildearth-plex.amagi.tv/master.m3u8
-#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Willow Extra Live [576p]
+#EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Willow Extra Live [720p]
 http://27.124.71.27/Willow_Extra/index.m3u8
 #EXTINF:-1  tvg-logo="https://i.imgur.com/sqeIrMo.jpeg" group-title="Others",Willow Sports [1080p]
 https://d36r8jifhgsk5j.cloudfront.net/Willow_TV1080p.m3u8

@@ -1,0 +1,3 @@
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"
+#EXTINF:-1 group-title="Radio Fm",Al Quran Radio
+http://66.45.232.131:9994/;stream.mp3

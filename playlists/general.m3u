@@ -1,6 +1,6 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"
-#EXTINF:-1 tvg-logo="https://i.postimg.cc/7ZNqRywh/20240823-023440.png" group-title="General",Gold Mines [576p]
-http://103.175.73.12:8080/live/53/53_0.m3u8
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/8a1af81802b0728c064c2adabcdc72c8" group-title="General",Etv [720p]
+https://tvsen6.aynaott.com/y4mEVZNAbeNWTbd6Z2Pw/index.m3u8?e=1781708094&u=f54c14f5-0c1d-4106-885c-3bcd7626f69f&token=3deb6eda056caa05c9f3b3012ecbedd1
 #EXTINF:-1 tvg-logo="https://i.postimg.cc/7ZNqRywh/20240823-023440.png" group-title="General",Gold Mines Bollywood [576p]
 http://103.175.73.12:8080/live/52/52_0.m3u8
 #EXTINF:-1 tvg-logo="https://i.postimg.cc/cCWYdSgj/20240823-020619.png" group-title="General",Khusbo Bangla [576p]

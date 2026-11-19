@@ -25,8 +25,6 @@ https://newyork.zeuscdn724.com/H9/index.m3u8
 http://138.68.138.119:8080/live/5a8993709ea19/index.m3u8
 #EXTINF:-1 group-title="Religious" tvg-logo="https://i.imgur.com/eKy2ocd.png",Ibn Tv Africa [576p]
 http://68.183.41.209:8080/live/5d9a537c64b9c/index.m3u8
-#EXTINF:-1 group-title="Religious" tvg-logo="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaGV1rjMnfayQtAnm2Nco8dvkxjBGoOc30kK9zvWFHTTKgHBuynFMcjlua556QatBkmEeBdQd8Q9AFhsI0L4y83qiFM9Hueuoml270SZhascjtJqG2KgOC7TDd1l7cvRppZ9g-Ct5NM-XfUOaQ_4EFFVw5VOrPl7M4sDA81dt93jMjFcY9FAyMp-Yglw/s1080/1000023432.png",Madani Channel [480p]
-https://streaming.madanichannel.tv/static/streaming-playlists/hls/b9790f10-cb0d-4e30-82bf-84a756234e58/master.m3u8
 #EXTINF:-1 group-title="Religious" tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-07-15/images_b8b896039b6eb685a11aab0b7b4a33d3_playmist_madani_tv_400x400.jpg",Madani Tv [720p]
 https://tvsen3.aynaott.com/z24qLsqV/index.m3u8
 #EXTINF:-1 group-title="Religious",Mahaa Bhakti [1080p]

@@ -3,8 +3,6 @@
 https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8
 #EXTINF:-1 group-title="[Gen] General",Cgtn Documentary [1080p]
 https://english-livebkali.cgtn.com/live/doccgtn.m3u8
-#EXTINF:-1 group-title="[Gen] General",Channel Divya [1080p]
-https://vg-pitaaratvlive.akamaized.net/v1/vglive-sk-906482/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Cna [SD]
 https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Fateh Tv [1080p]
@@ -19,12 +17,16 @@ https://amg00861-terninternation-lifestyle-samsungau-kdlyy.amagi.tv/playlist/amg
 https://amg00861-terninternation-inwild-samsunguk-w5wic.amagi.tv/playlist/amg00861-terninternation-inwild-samsunguk/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Inwonder
 https://amg00861-terninternation-inwonder-samsungau-1k63k.amagi.tv/playlist/amg00861-terninternation-inwonder-samsungau/playlist.m3u8
+#EXTINF:-1 group-title="[Gen] General",Mercy Tv [1080p]
+https://5dd3981940faa.streamlock.net/mercytv/mercytv/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Pmc Telugu [720p]
 https://mumbai-edge.smartplaytv.in/PMC/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Pravasi Channel [1080p]
 https://m6gdavepdn93-hls-live.5centscdn.com/pravasi/d0dbe915091d400bd8ee7f27f0791303.sdp/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Salvation Tv [1080p]
 https://ktismaservers.in:3902/live/salvationtvlive.m3u8
+#EXTINF:-1 group-title="[Gen] General",Satsang Tv [480p]
+https://d2vfwvjxwtwq1t.cloudfront.net/out/v1/6b24239d5517495b986e7705490c6e65/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shalom Tv [1080p]
 https://d2c4zqo2rb5uf1.cloudfront.net/master.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shubh Tv [1080p]

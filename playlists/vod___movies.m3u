@@ -3,10 +3,14 @@
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Ajmol_Khaner_Double_Bou_(2020).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/030017383ab9fb0e4ff0b2ceacfb9089.jpg" group-title="VOD / Movies",Amader Pasher Barita [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/exclusive/Amader_Pasher_Barita/Amader_Pasher_Barita_(2026).mp4/index.m3u8
+#EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/cd3ed95ddc5626d757228ca8beecc53b.jpg" group-title="VOD / Movies",Amar Kotha Ekbaro Vable Na [1080p]
+https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Amar_Kotha_Ekbaro_Vable_Na_(2019).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.postimg.cc/FKfV48SF/animal-planet-logo-brandlogos-net-psvki-300x300.png" group-title="VOD / Movies",Animal Plant [1080p]
 https://vodzong.mjunoon.tv:8087/streamtest/Animal-Planet-158-3/playlist.m3u8
 #EXTINF:-1 group-title="VOD / Movies",Antarjal [1080p]
 http://103.225.94.27/Infobase/hdd-2/Bangla/Antarjal%20(2023)%201080p%20WEBDL.mp4
+#EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/56844fdcc1249d3f968719ec9894cb66.jpg" group-title="VOD / Movies",Bad Patient [1080p]
+https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Bad_Patient_(2019).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/80484a64b178e889d23388131ca72079.jpg" group-title="VOD / Movies",Barir Choto Chele [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Barir_Choto_Chele_(2026).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/4262d5d138b329374eb28fb12243fe0e.jpg" group-title="VOD / Movies",Barishailla Graduate [1080p]
@@ -59,5 +63,7 @@ http://103.225.94.27/Infobase/hdd-3/Hindi%20Dub/Test%20(2025)%201080p%20WEBDL.mp
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Tomaroi_Thakbo_(2026).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/639771a59fde1c1202fabb31989b57ee.jpg" group-title="VOD / Movies",Vul Naki Prem [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Vul_Naki_Prem_(2026).mp4/index.m3u8
+#EXTINF:-1 tvg-logo="https://assets-prod.services.toffeelive.com/f_png,W 300,Q 85/Ay52 Jqbv9Knk3Ahfdwt/Posters/00Afb30B 3C19 4C4C Abd8 891Db94E4767.Webp" Group Title="Hindi Movie", Sony Max
+http://rgkkw.live:80/live/1Aoen7elp5/IgMJ60tmAa/151.ts
 #EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://dtil.tmsimg.com/assets/GNLZZGG0022K5ZV.png?lock=720x540",Zee Action [576p]
 http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/967.ts

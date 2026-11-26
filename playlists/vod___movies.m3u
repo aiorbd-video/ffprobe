@@ -55,8 +55,6 @@ https://vods2.aynaott.com/hindimovies/index.m3u8
 https://vods2.aynaott.com/vod/bangla/drama/gseries/exclusive/Punorabritti/Punorabritti_(2026).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.postimg.cc/4yzL4VGv/images-(1)-(1).jpg" group-title="VOD / Movies",Quran (Criticx Islamic) [720p]
 https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8
-#EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://i.postimg.cc/YS3BdNNW/20240823_022655.png",Sony Max [1080p]
-http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/151.ts
 #EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/d6/Star_Movies_HD_India.png",Star Movies [1080p]
 http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/98842.ts
 #EXTINF:-1 group-title="VOD / Movies",Surongo [SD]
@@ -67,5 +65,7 @@ http://103.225.94.27/Infobase/hdd-3/Hindi%20Dub/Test%20(2025)%201080p%20WEBDL.mp
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Tomaroi_Thakbo_(2026).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/639771a59fde1c1202fabb31989b57ee.jpg" group-title="VOD / Movies",Vul Naki Prem [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Vul_Naki_Prem_(2026).mp4/index.m3u8
+#EXTINF:-1 tvg-logo="https://assets-prod.services.toffeelive.com/f_png,W 300,Q 85/Ay52 Jqbv9Knk3Ahfdwt/Posters/00Afb30B 3C19 4C4C Abd8 891Db94E4767.Webp" Group Title="Hindi Movie", Sony Max [1080p]
+http://rgkkw.live:80/live/1Aoen7elp5/IgMJ60tmAa/151.ts
 #EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://dtil.tmsimg.com/assets/GNLZZGG0022K5ZV.png?lock=720x540",Zee Action [576p]
 http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/967.ts

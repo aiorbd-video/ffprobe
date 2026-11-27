@@ -1,8 +1,6 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"
 #EXTINF:-1 group-title="[Gen] General",Arirang Tv [1080p]
 https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/chunklist_b3256000_sleng.m3u8
-#EXTINF:-1 group-title="[Gen] General",Cgtn [720p]
-https://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8
 #EXTINF:-1 group-title="[Gen] General",Cgtn Documentary [1080p]
 https://english-livebkali.cgtn.com/live/doccgtn.m3u8
 #EXTINF:-1 group-title="[Gen] General",Cna [SD]
@@ -27,10 +25,6 @@ https://mumbai-edge.smartplaytv.in/PMC/index.m3u8
 https://m6gdavepdn93-hls-live.5centscdn.com/pravasi/d0dbe915091d400bd8ee7f27f0791303.sdp/playlist.m3u8
 #EXTINF:-1 group-title="[Gen] General",Salvation Tv [1080p]
 https://ktismaservers.in:3902/live/salvationtvlive.m3u8
-#EXTINF:-1 group-title="[Gen] General",Sanskar Tv [480p]
-https://d26idhjf0y1p2g.cloudfront.net/out/v1/cd66dd25b9774cb29943bab54bbf3e2f/index.m3u8
-#EXTINF:-1 group-title="[Gen] General",Satsang Tv [480p]
-https://d2vfwvjxwtwq1t.cloudfront.net/out/v1/6b24239d5517495b986e7705490c6e65/index.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shalom Tv [1080p]
 https://d2c4zqo2rb5uf1.cloudfront.net/master.m3u8
 #EXTINF:-1 group-title="[Gen] General",Shubh Tv [1080p]

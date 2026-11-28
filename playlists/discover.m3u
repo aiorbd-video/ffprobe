@@ -1,5 +1,3 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/aiorbd-video/epg/main/guide.xml"
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/History_%282021%29.svg/500px-History_%282021%29.svg.png" group-title="Discover",History Tv [720p]
 http://170.83.16.50/HISTORY/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.postimg.cc/fLjw9kZh/10.jpg" group-title="Discover",Travelxp [SD]
-https://travelxp-travelxp-1-eu.rakuten.wurl.tv/playlist.m3u8

@@ -5,8 +5,6 @@ https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Ajmol_Khaner_Double_Bou_
 https://vods2.aynaott.com/vod/bangla/drama/gseries/exclusive/Amader_Pasher_Barita/Amader_Pasher_Barita_(2026).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/cd3ed95ddc5626d757228ca8beecc53b.jpg" group-title="VOD / Movies",Amar Kotha Ekbaro Vable Na [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Amar_Kotha_Ekbaro_Vable_Na_(2019).mp4/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.postimg.cc/FKfV48SF/animal-planet-logo-brandlogos-net-psvki-300x300.png" group-title="VOD / Movies",Animal Plant [1080p]
-https://vodzong.mjunoon.tv:8087/streamtest/Animal-Planet-158-3/playlist.m3u8
 #EXTINF:-1 group-title="VOD / Movies",Antarjal [1080p]
 http://103.225.94.27/Infobase/hdd-2/Bangla/Antarjal%20(2023)%201080p%20WEBDL.mp4
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/56844fdcc1249d3f968719ec9894cb66.jpg" group-title="VOD / Movies",Bad Patient [1080p]
@@ -39,6 +37,8 @@ https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Half_Bottle_(2026).mp4/i
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Hasu_Chor_Kasu_Chor_(2020).mp4/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-04-12/images_bcd13d64c7fb0fe0c8a48b350d25ef0a_playmist_free_web_temp.jpg" group-title="VOD / Movies",Iti Rudra [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/2026/Iti_Rudra_(2026).mp4/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.postimg.cc/rFcCkS5m/20240822_231714.png" group-title="VOD / Movies",Jalsha Movies [1080p]
+http://rgkkw.live:80/live/1Aoen7elp5/IgMJ60tmAa/425.ts
 #EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://i.imgur.com/79g2kMA.png",Jtv Classic [720p]
 http://103.67.97.46/0.ts
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-04-13/images_1f2d05df7db953b11abd7fb0d34bb9e1_playmist_kabjab1090.jpg" group-title="VOD / Movies",Kabjab [1080p]
@@ -53,12 +53,8 @@ https://vods2.aynaott.com/vod/bangla/drama/gseries/2019/Mayasri_(2019).mp4/index
 https://vods2.aynaott.com/hindimovies/index.m3u8
 #EXTINF:-1 tvg-logo="https://web.aynaott.com/storage/019dd92f-107c-7056-9e79-e5233f6e51d9/uploads/images/2026-06-24/82936773479cbd7fa57eb5000cc1486a.jpg" group-title="VOD / Movies",Punorabritti [1080p]
 https://vods2.aynaott.com/vod/bangla/drama/gseries/exclusive/Punorabritti/Punorabritti_(2026).mp4/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.postimg.cc/4yzL4VGv/images-(1)-(1).jpg" group-title="VOD / Movies",Quran (Criticx Islamic) [720p]
-https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8
 #EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://i.postimg.cc/YS3BdNNW/20240823_022655.png",Sony Max [1080p]
 http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/151.ts
-#EXTINF:-1 group-title="VOD / Movies" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/d6/Star_Movies_HD_India.png",Star Movies [1080p]
-http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/98842.ts
 #EXTINF:-1 group-title="VOD / Movies",Surongo [SD]
 https://pub-d8f5af7f053343ed8295b16a145f6c1c.r2.dev/siam/[FGBDVibes]Surongo.(2023).480p.mkv
 #EXTINF:-1 group-title="VOD / Movies",Test [1080p]
